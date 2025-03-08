@@ -12,7 +12,7 @@ interface CurrencyServiceData {
     providedIn: 'root'
 })
 export class CurrencyService {
-    token=localStorage.getItem('accessTokenEcommerce');
+    token:any="";
     server:string="http://192.119.110.192:5001/api/"
     // server:string="http://31.220.60.223/server/";
     headers = new HttpHeaders({
@@ -34,7 +34,11 @@ export class CurrencyService {
         this.changesSubject$.next(value);
     }
 
-    constructor(private http:HttpClient) { }
+    constructor(private http:HttpClient) { 
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
+        }
+    }
 
 
     getcurrencies():Observable<any>{

@@ -15,7 +15,7 @@ export class AuthService {
   userstrin = '';
   userid = '';
   server = 'http://192.119.110.192:5001/api/';
-  token: any = localStorage.getItem('accessTokenEcommerce') || '';
+  token: any = '';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -24,7 +24,11 @@ export class AuthService {
     })
   };
   constructor(private _httpClient: HttpClient, private router: Router, private root: RootService
-  ) { }
+  ) { 
+    if (typeof window !== 'undefined') {
+      this.token = localStorage.getItem('accessTokenEcommerce');
+  }
+  }
   PaymentUsingPalPay(obj: any): Observable<any> {
     return this._httpClient.post(this.server + "PaymentUsingPalPay", obj, this.httpOptions);
 

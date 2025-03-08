@@ -62,7 +62,7 @@ export class CartItemService {
     readonly total$: Observable<number> = this.totalSubject$.asObservable();
 
     readonly onAdding$: Observable<Item> = this.onAddingSubject$.asObservable();
-    token = localStorage.getItem('accessTokenEcommerce');
+    token :any= "";
     server: string = "http://192.119.110.192:5001/api/"
     headers = new HttpHeaders({
         'Content-Type': 'application/json',
@@ -76,6 +76,9 @@ export class CartItemService {
         if (isPlatformBrowser(this.platformId)) {
             this.load();
             this.calc();
+        }
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
         }
     }
 
