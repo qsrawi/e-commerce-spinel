@@ -1,0 +1,130 @@
+<div class="card" *ngIf="!loadding" style="background-color: #F1F1F1;border-radius: 20px !important;">
+    <div class="card-header">
+        <h5 style="color: #10CFC9 ;">الطلبات</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-table">
+
+        <div *ngFor="let order of orders" style="background-color: white;border-radius: 20px; margin: 20px;">
+            <div *ngIf="order.orderItems.length>0">
+                <div *ngFor="let orderitem of order.orderItems;let  i = index">
+                    <div class="row justify-content-center" *ngIf="i==0"
+                        style="align-items: center; width: 100%;padding: 20px;">
+                        <div class="col-2" style="padding: 10px;">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==true" height="100"
+                                src="http://192.119.110.192:5001/itemimage/{{getimagename(orderitem)}}" alt=""
+                                style="border-radius: 10px;">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==false" height="100"
+                                src="assets/images/products/product-3.jpg" alt="">
+                        </div>
+                        <div class="col-4">
+                            <a href="javascript:" style="color: black;">رقم الطلب : {{order.VoucherID}}</a>
+                            <br>
+                            <div>حالة الطلب : <span
+                                    style="background-color: #10CFC9; color: white;padding: 0px 10px;border-radius: 10px;">{{
+                                    order.statusstring}}</span></div>
+                        </div>
+                        <div class="col-4">تاريخ الطلب : {{ order.VoucherDate | date:'yyyy-MM-dd' }}
+
+                            <br>
+                            المجموع : {{
+                            getsum(order)|currencyFormat }}
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-secondary" (click)="ordertrackpage(order.VoucherID)">تتبع</button>
+                            <a class="btn btn-secondary" style="color: #FD8B8F; text-decoration: underline; background-color: transparent; border: none;padding: 0px;margin: 0px;" 
+                                (click)="showdit(order.VoucherID)">التفاصيل كاملة</a>
+                        </div>
+                    </div>
+                    <div *ngIf="order.VoucherID==id" class="row justify-content-center" style="align-items: center; width: 100%;padding: 20px;">
+                        <div class="col-2" style="padding: 10px;">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==true" height="100"
+                                style="border-radius: 10px;"
+                                src="http://192.119.110.192:5001/itemimage/{{getimagename(orderitem)}}" alt="">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==false" height="100"
+                                src="assets/images/products/product-3.jpg" alt="">
+                        </div>
+                        <div class="col-2" style="padding: 10px;">
+                            <a appClick [routerLink]="root.item(orderitem)" style="color: black;">{{
+                                orderitem.ItemEnName}}</a>
+                            <p style="margin-bottom:0 ;">{{orderitem.ItemNote}}</p>
+                            <p style="margin-bottom:0 ;">الفئة : <strong>{{orderitem.StoreEnName}}</strong></p>
+                        </div>
+                        <div class="col-2">الكمية : {{orderitem.quantity}}</div>
+                        <div class="col-2">السعر :
+                            {{orderitem.PriceLevel_Price|currencyFormat}}</div>
+
+                        <div class="col-2">
+                            المجموع :
+                            {{orderitem.PriceLevel_Price*(orderitem.quantity||1)| currencyFormat }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="table-responsive-sm">
+            <table class="table">
+                <thead>
+                    <tr style="background-color: #f2f2f2">
+                        <th style="color: black;width:15% ;text-align: center;"><strong>Order ID</strong></th>
+                        <th style="color: black;width:27%;text-align: center ;"><strong>Date</strong></th>
+                        <th style="color: black;width:20%;text-align: center ;"><strong>Status</strong></th>
+                        <th style="color: black;width:20%;text-align: center ;"><strong>Estimated time</strong></th>
+                        <th style="color: black;width:18% ;text-align: center;"><strong>Total</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr *ngFor="let order of orders">
+                        <td colspan="5" style="padding: 0px;" *ngIf="order.orderItems.length>0">
+                            <div *ngFor="let orderitem of order.orderItems">
+                    <tr style="background-color: #f2f2f2;display: block;">
+                        <td style="width:15%;text-align: center;"><a href="javascript:">#{{order.VoucherID}}</a></td>
+                        <td style="vertical-align: middle; width: 27%;text-align: center;">{{ order.VoucherDate |
+                            date:'yyyy-MM-dd' }}</td>
+                        <td style="vertical-align: middle;width: 20%;text-align: center;">{{ order.statusstring}}</td>
+                        <td style="vertical-align: middle;width: 20%;text-align: center;">
+                            <span *ngIf="order.DueDate!=null">{{order.DueDate| date:'yyyy-MM-dd'}}</span>
+                            <span *ngIf="order.DueDate==null">Not Set Yet</span>
+                        </td>
+                        <td></td>
+                        <td style="vertical-align: middle;width: 18%;text-align: center;">{{
+                            getsum(order)|currencyFormat }}</td>
+                    </tr>
+                    <tr style="display: block;">
+                        <td style="width:15%;text-align: center;">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==true" height="100"
+                                width="80" src="http://192.119.110.192:5001/itemimage/{{getimagename(orderitem)}}" alt="">
+                            <img [routerLink]="root.item(orderitem)" *ngIf="check(orderitem)==false" height="100"
+                                width="80" src="assets/images/products/product-3.jpg" alt="">
+                        </td>
+                        <td style="vertical-align: middle; width: 27%;">
+                            <a appClick [routerLink]="root.item(orderitem)" style="color: black;">{{
+                                orderitem.ItemEnName}}</a>
+                            <p style="margin-bottom:0 ;">{{orderitem.ItemNote}}</p>
+                            <p style="margin-bottom:0 ;">Store : <strong>{{orderitem.StoreEnName}}</strong></p>
+                        </td>
+                        <td style="vertical-align: middle;width: 20%;text-align: center;">{{orderitem.quantity}} X
+                            {{orderitem.PriceLevel_Price|currencyFormat}}</td>
+
+                        <td style="vertical-align: middle;width: 20%;text-align: center;">
+                            {{orderitem.PriceLevel_Price*(orderitem.quantity||1)| currencyFormat }}
+                        </td>
+                        <td></td>
+                        <td style="vertical-align: middle;width: 18%;text-align: center;">
+                            <button class="btn btn-secondary" (click)="ordertrackpage(order.VoucherID)">Track</button>
+                        </td>
+                    </tr>
+
+        </div>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    </div> -->
+    </div>
+    <!-- <div class="card-divider"></div> -->
+    <!-- <div class="card-footer"> -->
+    <!-- <app-pagination [total]="3"></app-pagination> -->
+    <!-- </div> -->
+</div>

@@ -1,0 +1,25 @@
+<div class="page-header" style="direction: rtl !important; text-align: start !important;">
+    <div class="page-header__container container">
+        <div class="page-header__breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <ng-container *ngFor="let breadcrumb of breadcrumbs; last as last">
+                        <li *ngIf="!last" class="breadcrumb-item">
+                            <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a>
+                            <app-icon class="breadcrumb-arrow" name="arrow-rounded-right-6x9" size="6x9"></app-icon>
+                        </li>
+                        <li *ngIf="last" class="breadcrumb-item active" aria-current="page">{{ breadcrumb.label }}</li>
+                    </ng-container>
+                </ol>
+            </nav>
+        </div>
+        <div *ngIf="header" class="page-header__title">
+            <h1 *ngIf="!Catalog" class="col-md-9" style="display: inline-block;">{{ header }}</h1>
+            <div class="shop-layout__sidebar" style="text-align: center;">
+                <img *ngIf="Catalog"  width="200" height="70" style="display: inline-block;" [src]="sanitize('data:image/jpg;base64, ' + _arrayBufferToBase64(StoreLogo.data))" alt=""/>
+            </div>
+
+            <!-- <h1 *ngIf="Catalog" class="col-md-8" style="display: inline-block; text-align: right;" >{{ header }}</h1> -->
+        </div>
+    </div>
+</div>

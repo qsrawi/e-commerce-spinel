@@ -1,0 +1,217 @@
+<app-block-slideshow></app-block-slideshow>
+<!-- <div class="container block-header justify-content-center" style="margin-bottom: 20px;">
+    <h4 style="color: #5F5F5F !important;">Why to Choose ديميلوس?</h4>
+</div> -->
+<!-- <h2>More To Love</h2> -->
+<!-- <div class="row justify-content-center">
+    <div *ngFor="let item of whytoChooselst">
+        <div class="col-2 col-md-2">
+            <a href="http://192.119.110.192:5001/whotoChoose/{{item.description}}" target="_blank">
+                <img src="http://192.119.110.192:5001/whotoChoose/{{item.attachment}}" class="rounded-circle" height="150"
+                    alt="Cinque Terre">
+
+            </a>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- <app-block-features layout="boxed"></app-block-features>
+<app-block-products-carousel
+    header="Featured Products"
+    layout="grid-5"
+    [rows]="1"
+    [loading]="featuredProducts.loading"
+    [products]="featuredProducts.products"
+    [groups]="featuredProducts.groups"
+    (groupChange)="groupChange(featuredProducts, $event)"
+></app-block-products-carousel>
+<app-block-products-carousel
+    header="Featured Products"
+    layout="grid-5"
+    [rows]="2"
+    [loading]="featuredProducts.loading"
+    [products]="featuredProducts.products"
+    [groups]="featuredProducts.groups"
+    (groupChange)="groupChange(featuredProducts, $event)"
+></app-block-products-carousel>
+
+<app-block-banner></app-block-banner>
+
+<app-block-products header="Bestsellers" layout="large-last" [products]="(bestsellers$|async) || []"></app-block-products>
+
+<app-block-categories header="Popular Categories" layout="compact" [categories]="(popularCategories$|async) || []"></app-block-categories> -->
+
+<!-- <app-block-products-carousel
+    header="New Arrivals"
+    layout="grid-5"
+    [rows]="1"
+    [loading]="latestProducts.loading"
+    [products]="latestProducts.products"
+    [groups]="latestProducts.groups"
+    (groupChange)="groupChange(latestProducts, $event)"
+></app-block-products-carousel> -->
+
+
+
+<!-- <div class="container block-header" *ngIf="CampaignList.length>0">
+    <h3 class="block-header__title">Campaigns and Offers</h3>
+    <div class="block-header__divider"></div>
+</div> -->
+
+<!-- <div class="container text-center" *ngIf="CampaignList.length>0">
+    <div *ngFor="let img of CampaignList" class="col-md-3 ttt" style="display: inline-block;padding: 20px;" (click)="openCampaignsandOffers(img)">
+        <img src="../Campaignsimage/{{img.ImageUrl}}" style="width: 100%;" height="300px">
+        <div class="middle"> 
+            <div class="text">{{img.name}}</div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <app-block-items *ngIf="latestItems.items.length>0" header="New Arrivals" layout="grid-5" [rows]="1"
+    [loading]="latestItems.loading" [items]="latestItems.items" [groups]="latestItems.groups"
+    (groupChange)="groupChangeItem(latestItems, $event)">
+</app-block-items>
+
+<app-block-items *ngIf="SellingFastItems.items.length>0" header="Selling Fast" layout="grid-5" [rows]="1"
+    [loading]="SellingFastItems.loading" [items]="SellingFastItems.items" [groups]="SellingFastItems.groups"
+    (groupChange)="groupChangeItem(SellingFastItems, $event)">
+</app-block-items> -->
+
+<!-- <app-block-items *ngIf="recentlyViewditems.items.length>0" header="Recently Viewed" layout="grid-5" [rows]="1"
+    [loading]="recentlyViewditems.loading" [items]="recentlyViewditems.items" [groups]="recentlyViewditems.groups"
+    (groupChange)="groupChangeItem(recentlyViewditems, $event)">
+</app-block-items> -->
+
+
+
+
+
+<!-- <app-block-items header="Recommended For You" layout="grid-5" [rows]="1" [loading]="RecomndedItems.loading"
+    [items]="RecomndedItems.items" [groups]="RecomndedItems.groups"
+    (groupChange)="groupChangeItem(RecomndedItems, $event)"></app-block-items> -->
+<div class="container text-center" *ngIf="MiddleImages.length>0">
+
+    <div *ngFor="let img of MiddleImages" class="col-md-6" style="display: inline-block;padding: 20px;">
+        <img src="http://192.119.110.192:5001/middleimages/{{img}}" style="width: 100%;border-radius: 20px;" height="300px">
+
+    </div>
+</div>
+
+<div class="container block-header justify-content-center" style="margin-bottom: 0px;margin-top: 50px;">
+    <div class="block-header__divider"></div>
+    <h2 style="color: #FF8C90 !important;margin-left: 10px;margin-right: 10px;">أحدث القطع</h2>
+    <div class="block-header__divider"></div>
+</div>
+<!-- <h2>More To Love</h2> -->
+<div class="container products-view__list products-list" [attr.data-layout]="layout" [attr.data-with-features]="false">
+    <div class="block-products-carousel__column" style="display: inline-block !important;">
+        <div *ngFor="let item of MoreToLoveItems.items" class="block-products-carousel__cell" id="cirkelcontainer"
+            style="display: inline-block!important;text-align: center;padding: 3px;">
+            <app-item-card [item]="item"></app-item-card>
+        </div>
+    </div>
+</div>
+<div class="container" style="text-align: center;" *ngIf="showSpinner">
+    <img class="center" width="50px" height="50px" src="../../assets/images/loading.gif">
+</div>
+
+<div class="container" style="text-align: center;" *ngIf="!LoaddingMoreTolove">
+    <hr>
+    <span>No More Item To Show</span>
+</div>
+
+
+
+<div class="container block-header justify-content-center" style="margin-bottom: 0px;margin-top: 50px;">
+    <div class="block-header__divider"></div>
+    <h2 style="color: #FF8C90 !important;margin-left: 10px;margin-right: 10px;">جميع الأصناف</h2>
+    <div class="block-header__divider"></div>
+</div>
+<!-- <h2>More To Love</h2> -->
+<div class="container products-view__list products-list" style="direction: rtl;text-align: right;"
+    [attr.data-layout]="layout" [attr.data-with-features]="false">
+    <div class="block-products-carousel__column" style="display: inline-block !important;">
+        <div *ngFor="let item of navsView;let i =index;">
+            <div class="col-md-3 col-2" (click)="nav(item)">
+                <div class="row" *ngIf="isEven(i)"
+                    style="background-color: #FF8C90;color: white; padding: 10px;border-radius: 10px;">
+                    <div class="col-8">{{item.ArName}}</div>
+                    <div class="col-2"></div>
+                    <div class="flex justify-content-center" style="background-color: white;border-radius: 100px;">
+                        <app-icon style="fill:#FF8C90;padding: 10px;" name="arrow-rounded-left-8x13"
+                            size="8x13"></app-icon>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!isEven(i)"
+                    style="background-color: #10CFC9;color: white; padding: 10px;border-radius: 10px;">
+                    <div class="col-8">{{item.ArName}}</div>
+                    <div class="col-2"></div>
+                    <div class="flex justify-content-center" style="background-color: white;border-radius: 100px;">
+                        <app-icon style="fill:#10CFC9;padding: 10px;" name="arrow-rounded-left-8x13"
+                            size="8x13"></app-icon>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 
+<br><br>
+<div class="row justify-content-center" *ngIf="safeURL">
+    <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" width="100%" height="600" [src]='safeURL' frameborder="0" allowfullscreen></iframe>
+</div>
+<br><br>
+
+<div class="scroll-row justify-content-center">
+    <div class="scroll-container">
+        <div *ngFor="let item of youtubelst" style="margin: 10px;" (click)="clickyoutube(item)">
+            <iframe  style="border-radius: 10px;pointer-events: none;" [src]='item.attachment' height="150" width="150" frameborder="0"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</div> -->
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayship}">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="onCloseHandleddisplayship()"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center" *ngIf="MiddleImages.length>0">
+
+                    <div *ngFor="let img of MiddleImages" class="col-md-12"
+                        style="display: inline-block;padding: 20px;">
+                        <img src="http://192.119.110.192:5001/middleimages/{{img}}" width="100%" height="auto">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div> -->
+
+<!-- <br><br>
+<div class="container block-header justify-content-center" style="margin-bottom: 5px;">
+    <h4 style="color: #5F5F5F !important;">Articles</h4>
+</div>
+<app-block-slideshow-articles></app-block-slideshow-articles> -->
+
+<!-- <div class="block-sidebar__item">
+    <app-widget-newsletter></app-widget-newsletter>
+</div> -->
+
+<!-- Button trigger modal -->
+<!-- <app-block-posts header="Latest News" layout="grid-nl" [posts]="posts"></app-block-posts>
+
+<app-block-brands [brands]="(brands$|async) || []"></app-block-brands>
+
+<app-block-product-columns>
+    <app-block-product-columns-item header="Top Rated Products" [products]="(columnTopRated$|async) || []"></app-block-product-columns-item>
+    <app-block-product-columns-item header="Special Offers" [products]="(columnSpecialOffers$|async) || []"></app-block-product-columns-item>
+    <app-block-product-columns-item header="Bestsellers" [products]="(columnBestsellers$|async) || []"></app-block-product-columns-item>
+</app-block-product-columns> -->

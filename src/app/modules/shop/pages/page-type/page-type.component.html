@@ -1,0 +1,77 @@
+<app-page-header *ngIf="StoreLogo!=null" class="container" [header]="pageHeader" [Catalog]="true"
+    [StoreLogo]="StoreLogo" [breadcrumbs]="breadcrumbs"></app-page-header>
+<div class="page-header__title" style="display: block;text-align: center;" *ngIf='searchWord!=null'>
+    <h1 class="col-md-9" style="display: inline-block;" *ngIf="searchWord!='CampaignsandOffers'">
+        Search: {{ searchWord }}</h1>
+    <h1 class="col-md-9" style="display: inline-block;" *ngIf="searchWord=='CampaignsandOffers'">
+        Campaigns and Offers</h1>
+
+</div>
+<!-- <div class="page-header__title" style="display: block;text-align: center;" *ngIf='searchWord==null'>
+    <div class="container" style="background-color: #F6F6F6;border-radius: 15px;padding: 0px !important;">
+        <div>
+            <h1 class="col-md-9" style="display: inline-block;">
+                {{currentName}}</h1>
+        </div>
+    </div>
+
+</div> -->
+<ng-container *ngIf="columns === 3">
+    <div class="container">
+        <br>
+        <div style="background-color: #F6F6F6;border-radius: 15px;padding: 0px !important;text-align: end;">
+            <h1  style="display: inline-block;color: #10CFC9;padding: 10px;">
+                {{currentName}}</h1>
+        </div>
+        <br>
+        <div class="shop-layout shop-layout--sidebar--{{ sidebarPosition }}">
+            <div class="shop-layout__sidebar" *ngIf="sidebarPosition === 'start'">
+                <app-shop-sidebar offcanvas="mobile"></app-shop-sidebar>
+            </div>
+            <div class="shop-layout__content">
+                <div class="block">
+                    <app-items-view [layout]="viewMode" grid="grid-5-full" offcanvas="mobile"></app-items-view>
+                    <br>
+                    <div class="col-md-12 text-center" *ngIf="isCamp==true">
+                        <span class="btn btn-primary btn-lg" (click)="makeCampOrder()">Make Order</span>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="shop-layout__sidebar" *ngIf="sidebarPosition === 'end'">
+                <app-shop-sidebar offcanvas="mobile"></app-shop-sidebar>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="currentcategory!=null"
+            style="border: 1px solid rgb(206, 197, 197); padding: 10px;">
+            <div class="typography">
+                <!-- <h5 style="word-wrap: break-word">Meta Title</h5>
+                <p style="word-wrap: break-word">
+                    {{currentcategory.MetaTitle}}
+                </p> -->
+                <h5>{{currentcategory.MetaTitle}}</h5>
+                <div style="white-space: pre-line ; font-size: 10pt;">
+                    {{currentcategory.MetaDescription}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ng-container>
+<!-- <ng-container>
+    <div class="container">
+        <div class="shop-layout__content">
+            يسمكطيسمكيسم 
+        </div>
+    </div> 
+</ng-container> -->
+<ng-container *ngIf="columns > 3">
+    <div class="container">
+        <div class="block">
+            <app-products-view [layout]="viewMode" [grid]="getProductsViewLayout()" offcanvas="always">
+            </app-products-view>
+        </div>
+        <app-shop-sidebar offcanvas="always"></app-shop-sidebar>
+    </div>
+</ng-container>

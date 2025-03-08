@@ -1,0 +1,745 @@
+<app-page-header [header]="'الدفع'" [breadcrumbs]="[
+    {label: 'Home',          url: root.home()},
+    {label: 'Shopping Cart', url: root.cart()},
+    {label: 'Checkout',      url: ''}
+]"></app-page-header>
+
+<div class="addresses-list container" *ngIf="!loadding" style="direction: rtl !important;text-align: right !important;">
+    <a class="addresses-list__item addresses-list__item--new">
+        <div class="addresses-list__plus"></div>
+        <div class="btn btn-secondary btn-sm" (click)="emptyaddress()">اضافة عنوان</div>
+    </a>
+    <div class="addresses-list__divider"></div>
+    <ng-container *ngFor="let address of addresses">
+        <div class="addresses-list__item card address-card">
+            <div class="address-card__badge" *ngIf="address.default">Default</div>
+            <div class="address-card__body">
+                <div class="address-card__name">{{ address.firstName + ' ' + address.lastName}}</div>
+                <div class="address-card__row">
+                    {{ address.country }}<br>
+                    {{ address.postcode }}, {{ address.city }}<br>
+                    {{ address.address }}
+                </div>
+                <div class="address-card__row">
+                    <div class="address-card__row-title">Phone Number</div>
+                    <div class="address-card__row-content">{{ address.phone }}</div>
+                </div>
+                <div class="address-card__row">
+                    <div class="address-card__row-title">Email Address</div>
+                    <div class="address-card__row-content">{{ address.email }}</div>
+                </div>
+                <div class="address-card__footer">
+                    <!-- <a routerLink="./{{address.ID}}">Edit</a>&nbsp;&nbsp;
+                    <a routerLink="./">Remove</a> -->
+                    <button class="btn btn-primary" (click)="billingtothis(address)">اختر</button>
+                </div>
+            </div>
+        </div>
+        <div class="addresses-list__divider"></div>
+    </ng-container>
+
+</div>
+<br>
+
+<div class="checkout block" style="direction: rtl;text-align: right;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3" *ngIf="!IsAuthenticated">
+                <app-alert type="primary" size="lg">Returning customer? <a [routerLink]="root.login()">Click here to
+                        login</a></app-alert>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-7">
+                <div class="card mb-lg-0">
+                    <div class="card-body">
+                        <h6 class="card-title">معلومات الإتصال : </h6>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-group input-box form-row">
+                                    <div style="width: 40%; padding-right: 10px;min-height: 30px;">
+                                        <select class="form-control form-control-sm" style="height: 100%;"
+                                            [(ngModel)]='selectedphone'>
+                                            <option value="+970">+970</option>
+                                            <option value="+972">+972</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" class="form-control" id="checkout-phone" style="max-width: 60%;"
+                                        placeholder="رقم الهاتف" [(ngModel)]="biilingAddress.phone">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <input type="text" class="form-control" id="checkout-first-name"
+                                    placeholder="الإسم الأول" [(ngModel)]="biilingAddress.firstName">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <input type="text" class="form-control" id="checkout-last-name"
+                                    placeholder="اسم العائلة" [(ngModel)]="biilingAddress.lastName">
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="checkout-company-name">Company Name <span
+                                    class="text-muted">(Optional)</span></label>
+                            <input type="text" class="form-control" id="checkout-company-name"
+                                placeholder="Company Name" [(ngModel)]="biilingAddress.CompanyName">
+                        </div> -->
+                        <div class="card-divider"></div>
+
+                        <div class="row">
+                            <label class="payment-methods__item-header"
+                                style="font-weight: bold;font-size: 16px;">التوصيل او الإستلام : </label>
+                            <label class="payment-methods__item-header">
+                                <span class="payment-methods__item-radio input-radio">
+                                    <span class="input-radio__body">
+                                        <input class="input-radio__input" name="checkout_payment_method" type="radio"
+                                            value='0' [(ngModel)]="method" (change)="changeinpaymentmethid()">
+                                        <span class="input-radio__circle"></span>
+                                    </span>
+                                </span>
+                                <span class="payment-methods__item-title">توصيل</span>
+                            </label>
+                            <label class="payment-methods__item-header">
+                                <span class="payment-methods__item-radio input-radio">
+                                    <span class="input-radio__body">
+                                        <input class="input-radio__input" name="checkout_payment_method" type="radio"
+                                            value='1' [(ngModel)]="method" (change)="changeinpaymentmethid()">
+                                        <span class="input-radio__circle"></span>
+                                    </span>
+                                </span>
+                                <span class="payment-methods__item-title">استلام من المحل</span>
+                            </label>
+                        </div>
+                        <div class="form-row" *ngIf="method==0">
+                            <div class="form-group col-4">
+                                <select id="checkout-country" class="form-control form-control-select2"
+                                    [(ngModel)]="biilingAddress.countryCode" (ngModelChange)="changecity()">
+                                    <option disabled>اختر المدينة</option>
+                                    <option *ngFor="let cun of Countreies" value="{{cun.country_code}}">
+                                        {{cun.country_enName}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-8">
+                                <input type="text" class="form-control" id="checkout-street-address"
+                                    placeholder="العنوان الكامل" [(ngModel)]="biilingAddress.address">
+                            </div>
+
+                        </div>
+                        <div class="card-divider"></div>
+
+                        <div class="row">
+                            <label class="payment-methods__item-header" style="font-weight: bold;font-size: 16px;">طريقة
+                                الدفع : </label>
+                            <label class="payment-methods__item-header">
+                                <span class="payment-methods__item-radio input-radio">
+                                    <span class="input-radio__body">
+                                        <input class="input-radio__input" name="checkout_payment_methodrr" type="radio"
+                                            value='1' [(ngModel)]="PaymentMethod" (change)="changeinpaymentmethid()">
+                                        <span class="input-radio__circle"></span>
+                                    </span>
+                                </span>
+                                <span class="payment-methods__item-title">بطاقة الائتمان</span>
+                            </label>
+                            <label class="payment-methods__item-header">
+                                <span class="payment-methods__item-radio input-radio">
+                                    <span class="input-radio__body">
+                                        <input class="input-radio__input" name="checkout_payment_methodrr" type="radio"
+                                            value='0' [(ngModel)]="PaymentMethod" (change)="changeinpaymentmethid()">
+                                        <span class="input-radio__circle"></span>
+                                    </span>
+                                </span>
+                                <span class="payment-methods__item-title">الدفع عند الاستلام</span>
+                            </label>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="checkout-city">Town / City</label>
+                            <input type="text" class="form-control" id="checkout-city"
+                                [(ngModel)]="biilingAddress.city">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-state">State / County</label>
+                            <input type="text" class="form-control" id="checkout-state"
+                                [(ngModel)]="biilingAddress.country">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-postcode">Postcode / ZIP</label>
+                            <input type="text" class="form-control" id="checkout-postcode"
+                                [(ngModel)]="biilingAddress.postcode">
+                        </div> -->
+                        <!-- <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="checkout-phone">Phone</label>
+                                <input type="text" class="form-control" id="checkout-phone" placeholder="Phone"
+                                    [(ngModel)]="biilingAddress.phone">
+                            </div>
+                        </div> -->
+
+
+
+                        <!-- <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="checkout-first-name">First Name</label>
+                                <input type="text" class="form-control" id="checkout-first-name"
+                                    placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="checkout-last-name">Last Name</label>
+                                <input type="text" class="form-control" id="checkout-last-name" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-company-name">Company Name <span
+                                    class="text-muted">(Optional)</span></label>
+                            <input type="text" class="form-control" id="checkout-company-name"
+                                placeholder="Company Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-country">Country</label>
+                            <select id="checkout-country" class="form-control">
+                                <option>Select a country...</option>
+                                <option>United States</option>
+                                <option>Russia</option>
+                                <option>Italy</option>
+                                <option>France</option>
+                                <option>Ukraine</option>
+                                <option>Germany</option>
+                                <option>Australia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-street-address">Street Address</label>
+                            <input type="text" class="form-control" id="checkout-street-address"
+                                placeholder="Street Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-address">Apartment, suite, unit etc. <span
+                                    class="text-muted">(Optional)</span></label>
+                            <input type="text" class="form-control" id="checkout-address">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-city">Town / City</label>
+                            <input type="text" class="form-control" id="checkout-city">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-state">State / County</label>
+                            <input type="text" class="form-control" id="checkout-state">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-postcode">Postcode / ZIP</label>
+                            <input type="text" class="form-control" id="checkout-postcode">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="checkout-email">Email address</label>
+                                <input type="email" class="form-control" id="checkout-email"
+                                    placeholder="Email address">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="checkout-phone">Phone</label>
+                                <input type="text" class="form-control" id="checkout-phone" placeholder="Phone">
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="form-group">
+                            <div class="form-check">
+                                <span class="form-check-input input-check">
+                                    <span class="input-check__body">
+                                        <input class="input-check__input" type="checkbox" id="checkout-create-account">
+                                        <span class="input-check__box"></span>
+                                        <svg class="input-check__icon" width="9px" height="7px">
+                                            <use xlink:href="assets/images/sprite.svg#check-9x7"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <label class="form-check-label" for="checkout-create-account">Create an account?</label>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="card-divider"></div>
+                    <!-- <div class="card-body">
+                        <h3 class="card-title">Shipping Details</h3>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <span class="form-check-input input-check">
+                                    <span class="input-check__body">
+                                        <input class="input-check__input" type="checkbox"
+                                            id="checkout-different-address">
+                                        <span class="input-check__box"></span>
+                                        <svg class="input-check__icon" width="9px" height="7px">
+                                            <use xlink:href="assets/images/sprite.svg#check-9x7"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <label class="form-check-label" for="checkout-different-address">Ship to a different
+                                    address?</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkout-comment">Order notes <span class="text-muted">(Optional)</span></label>
+                            <textarea id="checkout-comment" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0" >
+                <div class="card mb-0" style="background-color: #F1F1F1 ;border-radius: 20px;">
+                    <div class="card-body">
+                        <h3 class="card-title">السلة</h3>
+
+                        <table class="checkout__totals">
+                            <thead class="checkout__totals-header">
+                                <tr>
+                                    <th></th>
+
+                                    <th></th>
+                                    <th></th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="checkout__totals-products">
+                                <ng-container *ngIf="isCamp==false">
+                                    <tr *ngFor="let item of cart.items$|async" style="border-bottom: solid 1px black; margin-bottom: 20px;">
+                                        <td >
+                                            <div *ngIf="item.product.ImagePath?.length" class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img" height="100%"
+                                                        src="http://192.119.110.192:5001/itemimage/{{item.product.ImagePath}}" alt="">
+                                                </a>
+                                            </div>
+                                            <div *ngIf="!item.product.ImagePath?.length && item.product.itemimages!=undefined && item.product.itemimages.length>0"
+                                                class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img" height="100%"
+                                                        src="http://192.119.110.192:5001/itemimage/{{item.product.itemimages[0].ImagePath}}"
+                                                        alt="">
+                                                </a>
+                                            </div>
+                                            <div *ngIf="!item.product.ImagePath?.length && item.product.itemimages?.length==0"
+                                                class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img" src="assets/images/products/product-3.jpg" height="100%" alt="">
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>{{ item.product.ItemEnName }} </td>
+                                        <td> {{ item.quantity}} X  {{ item.product.PriceLevel_Price}}</td>
+
+                                        <td>{{ item.product.PriceLevel_Price * item.quantity|currencyFormat }}</td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="isCamp==true">
+                                    <tr *ngFor="let item of cartCamp.items$|async" style="border-bottom: solid 1px black;margin-bottom: 20px;">
+                                        <td class="cart-table__column cart-table__column--image">
+                                            <div *ngIf="item.product.ImagePath?.length" class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img"
+                                                        src="http://192.119.110.192:5001/itemimage/{{item.product.ImagePath}}" alt="">
+                                                </a>
+                                            </div>
+                                            <div *ngIf="!item.product.ImagePath?.length && item.product.itemimages!=undefined && item.product.itemimages.length>0"
+                                                class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img"
+                                                        src="http://192.119.110.192:5001/itemimage/{{item.product.itemimages[0].ImagePath}}"
+                                                        alt="">
+                                                </a>
+                                            </div>
+                                            <div *ngIf="!item.product.ImagePath?.length && item.product.itemimages?.length==0"
+                                                class="product-image">
+                                                <a [routerLink]="root.item(item.product)" class="product-image__body">
+                                                    <img class="product-image__img" src="assets/images/products/product-3.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>{{ item.product.ItemEnName }}</td>
+                                        <td> {{ item.quantity }} X  {{ item.product.PriceLevel_Price}}</td>
+                                        <td>{{ item.product.PriceLevel_Price * item.quantity|currencyFormat }}</td>
+                                    </tr>
+                                </ng-container>
+
+                            </tbody>
+
+
+                            
+                            <tbody *ngIf="isCamp==false && (cart.totals$|async)?.length"
+                                class="checkout__totals-subtotals">
+                                <tr>
+                                    <th>المجموع قبل</th>
+                                    <td>{{ cart.subtotal$|async|currencyFormat }}</td>
+                                </tr>
+                                <tr *ngFor="let total of cart.totals$|async">
+                                    <th>{{ total.title }}</th>
+                                    <td>{{ total.price|currencyFormat }}
+                                        <span style="width: 10px;"></span>
+                                        <i class="fas fa-info" (click)="openModaldisplayship()"></i>
+                                        <!-- <i class="fa-solid fa-circle-info" (click)="openModalgift()"></i> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="isCamp==true && (cartCamp.totals$|async)?.length"
+                                class="checkout__totals-subtotals">
+                                <tr>
+                                    <th>المجموع قبل</th>
+                                    <td>{{ cartCamp.subtotal$|async|currencyFormat }}</td>
+                                </tr>
+                                <tr *ngFor="let total of cartCamp.totals$|async">
+                                    <th>{{ total.title }}</th>
+                                    <td>{{ total.price|currencyFormat }}
+                                        <span style="width: 10px;"></span>
+                                        <i class="fas fa-info" (click)="openModaldisplayship()"></i>
+                                        <!-- <i class="fa-solid fa-circle-info" (click)="openModalgift()"></i> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="checkout__totals-footer">
+                                <tr>
+                                    <th>المجموع النهائي</th>
+                                    <td *ngIf="isCamp==false">{{ cart.total$|async|currencyFormat }}</td>
+                                    <td *ngIf="isCamp==true">{{ cartCamp.total$|async|currencyFormat }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <!-- <div class="checkout__agree form-group">
+                            <div class="form-check">
+                                <span class="form-check-input input-check">
+                                    <span class="input-check__body">
+                                        <input class="input-check__input" type="checkbox" id="checkout-gift"
+                                            [(ngModel)]="gift">
+                                        <span class="input-check__box"></span>
+                                        <svg class="input-check__icon" width="9px" height="7px">
+                                            <use xlink:href="assets/images/sprite.svg#check-9x7"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <label class="form-check-label" for="checkout-gift">
+                                    ارسال كهدية
+                                    <span style="color: blue;" (click)="openModalgift()"> التفاصيل </span>
+                                    <i class="fas fa-gift" (click)="openModalgift()"></i>
+                                </label>
+                            </div>
+
+                        </div> -->
+
+                        <!-- <div class="payment-methods">
+                            <ul class="payment-methods__list"> -->
+                        <!-- <li class="payment-methods__item payment-methods__item--active">
+                                    <label class="payment-methods__item-header">
+                                        <span class="payment-methods__item-radio input-radio">
+                                            <span class="input-radio__body">
+                                                <input class="input-radio__input" name="checkout_payment_method"
+                                                    type="radio" checked>
+                                                <span class="input-radio__circle"></span>
+                                            </span>
+                                        </span>
+                                        <span class="payment-methods__item-title">Direct bank transfer</span>
+                                    </label>
+                                    <div class="payment-methods__item-container">
+                                        <div class="payment-methods__item-description text-muted">
+                                            Make your payment directly into our bank account. Please use your Order ID
+                                            as the payment
+                                            reference. Your order will not be shipped until the funds have cleared in
+                                            our account.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="payment-methods__item">
+                                    <label class="payment-methods__item-header">
+                                        <span class="payment-methods__item-radio input-radio">
+                                            <span class="input-radio__body">
+                                                <input class="input-radio__input" name="checkout_payment_method"
+                                                    type="radio">
+                                                <span class="input-radio__circle"></span>
+                                            </span>
+                                        </span>
+                                        <span class="payment-methods__item-title">Check payments</span>
+                                    </label>
+                                    <div class="payment-methods__item-container">
+                                        <div class="payment-methods__item-description text-muted">
+                                            Please send a check to Store Name, Store Street, Store Town, Store State /
+                                            County, Store Postcode.
+                                        </div>
+                                    </div>
+                                </li> -->
+
+                        <!-- <li class="payment-methods__item">
+                                    <label class="payment-methods__item-header">
+                                        <span class="payment-methods__item-radio input-radio">
+                                            <span class="input-radio__body">
+                                                <input class="input-radio__input" name="checkout_payment_method"
+                                                    type="radio" value='0' [(ngModel)]="PaymentMethod"
+                                                    (change)="changeinpaymentmethid()">
+                                                <span class="input-radio__circle"></span>
+                                            </span>
+                                        </span>
+                                        <span class="payment-methods__item-title">Cash on delivery</span>
+                                    </label>
+                                    <div class="payment-methods__item-container">
+                                        <div class="payment-methods__item-description text-muted">
+                                            Pay with cash upon delivery.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="payment-methods__item">
+                                    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+                                    <div class="payment-methods__item-container">
+                                        <div class="payment-methods__item-description text-muted">
+                                            Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                            account.
+                                        </div>
+                                    </div>
+                                </li> -->
+                        <!-- <li class="payment-methods__item">
+                                    <label class="payment-methods__item-header" (click)="showpaymen('Credit')">
+                                        <span class="payment-methods__item-title" style="width: 95%;">بطاقة
+                                            الائتمان</span>
+                                        <i class="fas fa-plus" style="width: 5%;"></i>
+                                    </label>
+                                    <hr style="margin: 0px;" *ngIf="showpayment=='Credit'">
+                                    <div *ngIf="showpayment=='Credit'">
+                                        <label class="payment-methods__item-header">
+                                            <span class="payment-methods__item-radio input-radio">
+                                                <span class="input-radio__body">
+                                                    <input class="input-radio__input" name="checkout_payment_method"
+                                                        type="radio" value='1' [(ngModel)]="PaymentMethod"
+                                                        (change)="changeinpaymentmethid()">
+                                                    <span class="input-radio__circle"></span>
+                                                </span>
+                                            </span>
+                                            <span class="payment-methods__item-title">بطاقة الائتمان</span>
+                                        </label>
+                                        <div class="payment-methods__item-container">
+                                            <div class="payment-methods__item-description text-muted">
+                                                بطاقة الائتمان
+                                            </div>
+                                        </div>
+                                
+                                    </div>
+                                </li> -->
+
+                        <!-- <li class="payment-methods__item">
+                                    <label class="payment-methods__item-header" (click)="showpaymen('Wallet')">
+                                        <span class="payment-methods__item-title" style="width: 95%;">المحافظ
+                                            الإلكترونية</span>
+                                        <i class="fas fa-plus" style="width: 5%;"></i>
+                                    </label>
+                                    <hr style="margin: 0px;" *ngIf="showpayment=='Wallet'">
+                                    <div class="text-center" *ngIf="showpayment=='Wallet'" style="padding:5px">
+                       
+                                        <img src="assets/images/palpayfinal.png" height="65" alt=""
+                                            style="margin-left: 5px;margin-right: 5px;border-radius: 20%;">
+                                        <img src="assets/images/jawwappay.jpg" height="65" alt=""
+                                            style="margin-left: 5px;margin-right: 5px;border-radius: 20%;">
+                                    </div>
+                                </li> -->
+
+
+                        <!-- <li class="payment-methods__item">
+                                    <label class="payment-methods__item-header" (click)="showpaymen('cash')">
+                                        <span class="payment-methods__item-title" style="width: 95%;">نقدي</span>
+                                        <i class="fas fa-plus" style="width: 5%;"></i>
+                                    </label>
+                                    <hr style="margin: 0px;" *ngIf="showpayment=='cash'">
+                                    <div *ngIf="showpayment=='cash'">
+                                        <label class="payment-methods__item-header">
+                                            <span class="payment-methods__item-radio input-radio">
+                                                <span class="input-radio__body">
+                                                    <input class="input-radio__input" name="checkout_payment_method"
+                                                        type="radio" value='0' [(ngModel)]="PaymentMethod"
+                                                        (change)="changeinpaymentmethid()">
+                                                    <span class="input-radio__circle"></span>
+                                                </span>
+                                            </span>
+                                            <span class="payment-methods__item-title">الدفع عند الاستلام</span>
+                                        </label>
+                                        <div class="payment-methods__item-container">
+                                            <div class="payment-methods__item-description text-muted">
+                                                ادفع عند استلام الطلب
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li> -->
+
+                        <!-- </ul>
+                        </div> -->
+
+                        <div class="checkout__agree form-group">
+                            <div class="form-check" >
+                                <span class="form-check-input input-check" >
+                                    <span class="input-check__body">
+                                        <input class="input-check__input" type="checkbox" id="checkout-terms"
+                                            [(ngModel)]="agree">
+                                        <span class="input-check__box"></span>
+                                        <svg class="input-check__icon" width="9px" height="7px">
+                                            <use xlink:href="assets/images/sprite.svg#check-9x7"></use>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <label class="form-check-label" for="checkout-terms">
+                                               قرأت ووافقت على لقد       
+                                    <a target="_blank" [routerLink]="root.terms()"> شروط وأحكام الموقع</a>*
+                                </label>
+                            </div>
+                        </div>
+                        <div class="cart__actions">
+                            <input type="text" class="form-control" id="input-coupon-code" [(ngModel)]="couponcode"
+                                placeholder="الكوبون">
+                            <button type="submit" class="btn btn-primary" (click)="Applycouponcode()">تطبيق</button>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-xl btn-block" (click)="saveorders()">اكمال
+                            الطلب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <button type="button" class="btn btn-info btn-lg" (click)="openModal()">click to open</button> -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Model Title</h4> -->
+                <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <!-- <p>Model body text</p> -->
+                <img src="assets/images/cvv.png" width="100%" alt="">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaygift}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Model Title</h4> -->
+                <button type="button" class="close" aria-label="Close" (click)="onCloseHandledgift()"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div [innerHTML]="GfitDescription"></div>
+                <!-- <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">Please create a new billing address
+                        with the person's name, phone number and address you are sending it to.</b></p>
+                <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">An order sheet without price value
+                        will be included that can be used for exchanges.</b></p>
+                <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">A special gift will be sent with the
+                        package from LacasFashion.ps
+                    </b></p> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseHandledgift()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayship}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Model Title</h4> -->
+                <button type="button" class="close" aria-label="Close" (click)="onCloseHandleddisplayship()"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">
+                        Special Shipping costs will be calculated with the Order Confirmation
+                    </b></p>
+                <!-- <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">An order sheet without price value
+                        will be included that can be used for exchanges.</b></p>
+                <p><b style="color:rgb(0,36,81);background-color:rgb(255,255,255)">A special gift will be sent with the
+                        package from LacasFashion.ps
+                    </b></p> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseHandleddisplayship()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentMethod}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Credit Or Debit
+                    Card</h4>
+                <button type="button" class="close" aria-label="Close"
+                    (click)="onCloseHandleddisplayPaymentMethod()"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Total : {{FinalTotal |currencyFormat}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm"
+                    (click)="PaymentUsingPalPay()">
+                    Continue </button>
+                <!-- <button type="button" class="btn btn-default"
+                    (click)="onCloseHandleddisplayPaymentMethod()">Close</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySuccessOrder}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Order Status</h4>
+                <button type="button" class="close" aria-label="Close"
+                    (click)="onCloseHandledisplaySuccessOrder()"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="order-success__body">
+                    <div class="order-success__header">
+                        <app-icon class="order-success__icon" name="check-100" size="100"></app-icon>
+                        <h1 class="order-success__title">Thank you</h1>
+                        <div class="order-success__subtitle">Your order has been Confirmed Successflully</div>
+                        <div class="order-success__subtitle">Order Number : {{OrderID}}</div>
+
+                        <div class="order-success__actions">
+                            <a routerLink="/" class="btn btn-xs btn-secondary">Go To Homepage</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm"
+                    (click)="onCloseHandledisplaySuccessOrder()">
+                    OK </button>
+                <!-- <button type="button" class="btn btn-default"
+                    (click)="onCloseHandleddisplayPaymentMethod()">Close</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" name="paymentForm" id="paymentForm" class="d-none" *ngIf="palpayRedirectData"
+    action="https://e-commerce.bop.ps/EcomPayment/RedirectAuthLink">
+    <input type="hidden" name="Version" value="{{palpayRedirectData.Version}}"><br>
+    <input type="hidden" name="MerID" value="{{palpayRedirectData.MerID}}"><br>
+    <input type="hidden" name="AcqID" value="{{palpayRedirectData.AcqID}}"><br>
+    <input type="hidden" name="MerRespURL" value="{{palpayRedirectData.MerRespURL}}"><br>
+    <input type="hidden" name="PurchaseAmt" value="{{palpayRedirectData.PurchaseAmt}}"><br>
+    <input type="hidden" name="PurchaseCurrency" value="{{palpayRedirectData.PurchaseCurrency}}"><br>
+    <input type="hidden" name="PurchaseCurrencyExponent" value="{{palpayRedirectData.PurchaseCurrencyExponent}}"><br>
+    <input type="hidden" name="OrderID" value="{{palpayRedirectData.OrderID}}"><br>
+    <input type="hidden" name="CaptureFlag" value="{{palpayRedirectData.CaptureFlag}}"><br>
+    <input type="hidden" name="Signature" value="{{palpayRedirectData.Signature}}"><br>
+    <input type="hidden" name="SignatureMethod" value="{{palpayRedirectData.SignatureMethod}}">
+</form>

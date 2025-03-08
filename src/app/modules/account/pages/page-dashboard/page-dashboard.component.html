@@ -1,0 +1,127 @@
+<div class="dashboard" *ngIf="!loading">
+    <div class="dashboard__profile card profile-card" style="background-color: transparent !important;">
+        <div class="card-header"> نظرة عامة</div>
+        <div class="card-body">
+            <!-- <div class="profile-card__avatar">
+                <img src="./assets/images/avatars/def.jpg" alt="">
+            </div> -->
+            <div class="profile-card__name" style="font-weight: bold;">معلومات تسجيل الدخول</div>
+
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-2">اسم المستخدم :</div>
+                    <div class="col-2"></div>
+
+                    <div class="col-8">{{userinfo.UserName}}</div>
+                </div>
+            </div>
+            <div class="profile-card__name">
+                <div class="row">
+                    <div class="col-2">كلمة المرور :</div>
+                    <div class="col-2"></div>
+
+                    <div class="col-8">**********   <a style="color: #FD8B8F;" routerLink="../password">غير الكلمة</a></div>
+                </div>
+            </div>
+            <div>__________________</div>
+
+            <div class="profile-card__name" style="font-weight: bold;">معلومات اضافية</div>
+
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-2">الإسم :</div>
+                    <div class="col-2"></div>
+
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../profile" >أضف الإسم</a></div>
+                </div>
+            </div>
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-2">رقم الهاتف :</div>
+                    <div class="col-2"></div>
+
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../profile" >رقم الهاتف </a></div>
+                </div>
+            </div>
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-3">البريد الإلكتروني:</div>
+                    <div class="col-1"></div>
+
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../profile" >البريد الإلكتروني </a></div>
+                </div>
+            </div>
+            <div>__________________</div>
+
+            <div class="profile-card__name" style="font-weight: bold;"> بحاجة الى مساعدة؟</div>
+
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../../site/SecureShopping" >سياسة الخصوصية</a></div>
+                </div>
+            </div>  
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../../site/ShippingandReturns" >سياسة الإرجاع</a></div>
+                </div>
+            </div>  
+
+            <div class="profile-card__name" >
+                <div class="row">
+                    <div class="col-8"><a style="color: #FD8B8F;  text-decoration: underline;" routerLink="../../site/contact-us" >اتصل بنا</a></div>
+                </div>
+            </div>  
+            <!-- <div class="profile-card__name">{{userinfo.FullName}}</div>
+            <div class="profile-card__email">{{userinfo.Email}}</div> -->
+        </div>
+    </div>
+    <!-- <div class="dashboard__address card address-card address-card--featured" *ngIf="address!=null">
+        <div class="address-card__body">
+            <div class="address-card__name">{{ address.firstName + ' ' + address.lastName}}</div>
+            <div class="address-card__row">
+                {{ address.country }}<br>
+                {{ address.postcode }}, {{ address.city }}<br>
+                {{ address.address }}
+            </div>
+            <div class="address-card__row">
+                <div class="address-card__row-title">Phone Number</div>
+                <div class="address-card__row-content">{{ address.phone }}</div>
+            </div>
+            <div class="address-card__row">
+                <div class="address-card__row-title">Email Address</div>
+                <div class="address-card__row-content">{{ address.email }}</div>
+            </div>
+            <div class="address-card__footer">
+                <a routerLink="/account/addresses/5">Edit Address</a>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="dashboard__orders card">
+        <div class="card-header">
+            <h5>Recent Orders</h5>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-table">
+            <div class="table-responsive-sm">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of orders">
+                            <td><a href="javascript:">#{{ order.VoucherID }}</a></td>
+                            <td>{{ order.VoucherDate | date:'yyyy/MM/dd' }}</td>
+                            <td>{{ order.StatusID==1?'saved': order.StatusID}}</td>
+                            <td>{{ getsum(order) |currencyFormat }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> -->
+</div>

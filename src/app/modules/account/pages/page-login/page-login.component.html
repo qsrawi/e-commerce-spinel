@@ -1,0 +1,203 @@
+<app-page-header [header]="'My Account'" [breadcrumbs]="[
+    {label: 'Home',       url: '/'},
+    {label: 'My Account', url: ''}
+]"></app-page-header>
+
+<div class="block">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 d-flex" style="border-radius: 20px !important;">
+                <div class="card flex-grow-1 mb-md-0">
+                    <div class="card-body" >
+                        <img src="../../../../../assets/images/loginback.png"  alt="" height="180px" width="100%" style="border-radius: 20px 20px 0px 0px !important;">
+                        <div style="padding: 2rem;">
+                            <h5 class="card-title justify-content-center text-center">سجل الدخول او انشىء حساب</h5>
+                            <div class="product-tabs" [ngClass]="{'product-tabs--layout--sidebar': withSidebar}">
+                                <div class="product-tabs__list"
+                                    style="background-color: black;border-radius: 15px;color: white;">
+                                    <a href="#tab-Register" class="product-tabs__item"
+                                        [ngClass]="{'product-tabs__item--active': tab === 'Register'}"
+                                        (click)="$event.preventDefault(); tab = 'Register'">انشاء حساب</a>
+                                    <a href="#tab-Login" class="product-tabs__item"
+                                        [ngClass]="{'product-tabs__item--active': tab === 'Login'}"
+                                        (click)="$event.preventDefault(); tab = 'Login'">سجل الدخول</a>
+                                </div>
+                                <div class="product-tabs__content">
+    
+                                    <div class="product-tabs__pane" id="tab-Login"
+                                        [ngClass]="{'product-tabs__pane--active': tab === 'Login'}">
+                                        <form [formGroup]="signInForm" #signInNgForm="ngForm" >
+                                            <div class="form-group">
+                                                <label>اسم المستخدم</label>
+                                                <input type="email" class="form-control" placeholder="اسم المستخدم"
+                                                    [formControlName]="'UserName'">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>كلمة المرور</label>
+                                                <input type="password" class="form-control" placeholder="كلمة المرور" name="Password"
+                                                    [formControlName]="'Password'">
+                                                <small class="form-text text-muted">
+                                                    <a appClick [routerLink]="root.forgotPassword()">هل نسيت كلمة المرور؟</a>
+                                                </small>
+                                            </div>
+                       
+                                            <button type="submit" style="border-radius: 10px;" class="btn btn-primary mt-2 mt-md-3 mt-lg-4"
+                                                (click)="login()">سجل الدخول</button>
+                                        </form>
+                                        <hr>
+                                        <div style="text-align: center;">
+                                            <i class="fab fa-facebook fa-2x" style="color: #1877F2;margin: 5px;cursor: pointer;"
+                                                (click)="socialLogIN('facebook')"></i>
+                                            <i class="fab fa-google fa-2x" style="color: #DB4437;margin: 5px;cursor: pointer;"
+                                                (click)="socialLogIN('google')"></i>
+                                            <!-- <i class="fab fa-apple fa-2x" style="color: #000000;margin: 5px;cursor: pointer;"
+                                                (click)="socialLogIN('apple')"></i> -->
+                                        </div>
+                                    </div>
+    
+                                    <div class="product-tabs__pane" id="tab-Register"
+                                        [ngClass]="{'product-tabs__pane--active': tab === 'Register'}">
+                                        <form [formGroup]="signUpForm" #signUPNgForm="ngForm" style="direction: rtl;">
+                                            <div class="form-group">
+                                                <label>اسم المستخدم</label>
+                                                <input type="text" class="form-control" placeholder="اسم المستخدم"
+                                                    [formControlName]="'UserName'" on-focusout="checkuser()">
+                                                <label *ngIf="usernamealeradyexist" style="color: red;">*اسم المستخدم غير متوفر</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>الاسم الكامل</label>
+                                                <input type="text" class="form-control" placeholder="الاسم الكامل"
+                                                    [formControlName]="'Name'">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>البريد الالكتروني</label>
+                                                <input type="email" class="form-control" placeholder="البريد الالكتروني"
+                                                    [formControlName]="'Email'">
+                                            </div>
+                                            <div class="form-group">
+                                                <!-- <span class="prefix" style="padding-right: 3px;">+970</span> -->
+                                                <!-- <div class="view-options__control"> -->
+                                                    <label >رقم الهاتف</label>
+
+                                                <div class="input-box" style="margin-right: 10px;min-width: 80px;">
+                                                    <select class="col-md-4 form-control" [(ngModel)]='selectedphone'>
+                                                        <option value="+970">+970</option>
+                                                        <option value="+972">+972</option>
+                                                    </select>
+                                                    <input type="text" class="col-md-8 form-control" ng2TelInput placeholder="رقم الهاتف"
+                                                    [formControlName]="'phoneNumber'">
+                                                </div>
+                                           
+                                            </div>
+                                            <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="alert alert-danger">
+                                                <div *ngIf="f.phoneNumber.errors?.required">رقم الهاتف مطلوب</div>
+                                                <div *ngIf="f.phoneNumber.errors?.pattern"> رقم الهاتف غير صحيح</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>كلمة المرور</label>
+                                                <input type="password" class="form-control" placeholder="كلمة المرور"
+                                                    [formControlName]="'Password'" (ngModelChange)="passChange()">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>تاكيد كلمة المرور</label>
+                                                <input type="password" class="form-control" placeholder="تاكيد كلمة المرور"
+                                                    [formControlName]="'RepeatPassword'" (ngModelChange)="passChange()">
+                                                <label *ngIf="passwordddidintmatch" style="color: red;">*كلمات المرور غير متطابقة</label>
+                                            </div>
+                                            <button type="submit" style="border-radius: 10px;" class="btn btn-primary mt-2 mt-md-3 mt-lg-4"
+                                                (click)="signup()">تسجيل</button>
+                                        </form>
+                                        <hr>
+                               
+                                        <div style="text-align: center;">
+                                            <i class="fab fa-facebook fa-2x" style="color: #1877F2;margin: 5px;cursor: pointer;"
+                                                (click)="socialSignUP('facebook')"></i>
+                                            <i class="fab fa-google fa-2x" style="color: #DB4437;margin: 5px;cursor: pointer;"
+                                                (click)="socialSignUP('google')"></i>
+                                            <div id="appleid-signin" data-mode="center-align" data-color="black" data-border="false"
+                                                data-border-radius="15" data-size="32"></div>
+                                            <!-- <i class="fab fa-apple fa-2x" style="color: #000000;margin: 5px;cursor: pointer;"
+                                                (click)="socialSignUP('apple')"></i> -->
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+                            </div>
+                        </div>
+                 
+                    
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-6 d-flex mt-4 mt-md-0">
+                <div class="card flex-grow-1 mb-0">
+                    <div class="card-body">
+                        <h3 class="card-title">Register</h3>
+                        <form [formGroup]="signUpForm" #signUPNgForm="ngForm">
+                            <div class="form-group">
+                                <label>User Name</label>
+                                <input type="text" class="form-control" placeholder="User Name"
+                                    [formControlName]="'UserName'" on-focusout="checkuser()">
+                                <label *ngIf="usernamealeradyexist" style="color: red;">*UserName Already Exisit</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" placeholder="Full Name"
+                                    [formControlName]="'Name'">
+                            </div>
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" class="form-control" placeholder="Enter email"
+                                    [formControlName]="'Email'">
+                            </div>
+                            <label>Phone Number</label>
+                            <div class="form-group input-box">
+                     
+                                <div style="margin-right: 10px;min-width: 80px;">
+                                    <select class="form-control form-control-sm" [(ngModel)]='selectedphone'>
+                                        <option value="+970">+970</option>
+                                        <option value="+972">+972</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-control" ng2TelInput placeholder="Enter Your Phone"
+                                    [formControlName]="'phoneNumber'">
+                            </div>
+                            <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="alert alert-danger">
+                                <div *ngIf="f.phoneNumber.errors?.required">Mobile Number is required.</div>
+                                <div *ngIf="f.phoneNumber.errors?.pattern"> Mobile number not valid.</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" placeholder="Password"
+                                    [formControlName]="'Password'" (ngModelChange)="passChange()">
+                            </div>
+                            <div class="form-group">
+                                <label>Repeat Password</label>
+                                <input type="password" class="form-control" placeholder="Password"
+                                    [formControlName]="'RepeatPassword'" (ngModelChange)="passChange()">
+                                <label *ngIf="passwordddidintmatch" style="color: red;">*Password didnt match</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2 mt-md-3 mt-lg-4"
+                                (click)="signup()">Register</button>
+                        </form>
+                        <hr>
+                        <div style="text-align: center;">OR</div>
+                        <p style="text-align: center;">Register using Facebook or Google</p>
+                        <div style="text-align: center;">
+                            <hr>
+                            <i class="fab fa-facebook fa-2x" style="color: #1877F2;margin: 5px;cursor: pointer;"
+                                (click)="socialSignUP('facebook')"></i>
+                            <i class="fab fa-google fa-2x" style="color: #DB4437;margin: 5px;cursor: pointer;"
+                                (click)="socialSignUP('google')"></i>
+                            <div id="appleid-signin" data-mode="center-align" data-color="black" data-border="false"
+                                data-border-radius="15" data-size="32"></div>
+               
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

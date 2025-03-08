@@ -1,0 +1,17 @@
+<app-page-header [header]="'Frequently Asked Questions'" [breadcrumbs]="[
+    {label: 'Home',                        url: '../../'},
+    {label: 'Frequently Asked Questions',  url: ''}
+]"></app-page-header>
+
+<div class="block faq">
+    <div class="container">
+        <div class="faq__section">
+            <div>
+            </div>
+            <div class="faq__section-body container">
+                <img src="../customerserviceimages/{{cus.imagePath}}" class="img-radius" alt="" style="max-height: 200px;">
+                <div [innerHTML]="basictemrs"></div>
+            </div>
+        </div>
+    </div>
+</div>

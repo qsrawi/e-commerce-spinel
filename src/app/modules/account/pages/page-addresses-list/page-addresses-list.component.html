@@ -1,0 +1,45 @@
+<div class="addresses-list" style="background-color: #F1F1F1; border-radius: 20px;">
+    <!-- <a routerLink="./0" class="addresses-list__item addresses-list__item--new">
+        <div class="addresses-list__plus"></div>
+        <div class="btn btn-secondary btn-sm">Add New</div>
+    </a> -->
+    <div class="card-header row">
+        <h5 style="color: #10CFC9;">عناويني</h5>
+        <a routerLink="./0" class="btn btn-secondary btn-sm" style="margin: 0px 10px; background-color: white; border-radius: 5px;color: #FD8B8F;">اضافة عنوان جديد <i class="fas fa-plus"></i></a>
+    </div>
+    <div class="addresses-list__divider"></div>
+
+    <ng-container *ngFor="let address of addresses">
+        <div class="addresses-list__item card address-card">
+            <div class="address-card__badge" *ngIf="address.default">Default</div>
+            <div class="address-card__body row">
+                <div class="col-2" style="padding: 10px;">
+                    <img height="50"
+                        src="../../../../../assets/images/address.png" alt=""
+                        style="border-radius: 10px;">
+                </div>
+                <div class="col-3 address-card__name">{{ address.firstName + ' ' + address.lastName}}</div>
+                <div class="col-3 address-card__row" style="font-weight: bold;">
+                    المحافظة : {{ address.country }}<br>
+                    {{ address.city }}<br>
+                    {{ address.address }}
+                </div>
+                <!-- <div class="col-3 address-card__row">
+                    <div class="address-card__row-title">Phone Number</div>
+                    <div class="address-card__row-content">{{ address.phone }}</div>
+                </div> -->
+                <!-- <div class="col-3 address-card__row">
+                    <div class="address-card__row-title">Email Address</div>
+                    <div class="address-card__row-content">{{ address.email }}</div>
+                </div> -->
+                <div class="col-4 address-card__footer justify-content-end">
+                    <a routerLink="./{{address.ID}}" style="color: #FD8B8F;"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                    <a routerLink="./" (click)="removeaddress(address.ID)" style="color: #FD8B8F;"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="addresses-list__divider"></div>
+    </ng-container>
+    <div class="addresses-list__divider"></div>
+
+</div>

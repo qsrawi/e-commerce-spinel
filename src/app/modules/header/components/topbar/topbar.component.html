@@ -1,0 +1,137 @@
+<!-- .topbar -->
+<div class="site-header__topbar topbar">
+    <div class="topbar__container">
+        <div class="topbar__row">
+
+            <!-- <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="/site/about-us">About Us</a>
+            </div>
+            <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="/site/contact-us">Contacts</a>
+            </div>
+            <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="">Store Location</a>
+            </div>
+            <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="/shop/track-order">Track Order</a>
+            </div>
+            <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="/site/BuyerProtection">Buyer Protection</a>
+            </div> -->
+            <!-- <div class="topbar__item topbar__item--link">
+                <a class="topbar-link" routerLink="/blog">Blog</a>
+            </div> -->
+            <!-- <div class="topbar__spring"></div>
+            <div class="topbar__item">
+                <div class="topbar-dropdown" appDropdown="topbar-dropdown--opened" #accountDropdown="appDropdown">
+                    <button class="topbar-dropdown__btn" type="button" (click)="accountDropdown.toggle()">
+                        My Account
+                        <app-icon name="arrow-rounded-down-7x5" size="7x5"></app-icon>
+                    </button>
+                    <div class="topbar-dropdown__body" *ngIf="IsAuthentecated==false">
+                        <app-header-menu layout="topbar" (itemClick)="accountDropdown.close()" [items]="[
+                            {label: 'Login',     url: '/account/login'}
+                        ]"></app-header-menu>
+                    </div>
+                    <div class="topbar-dropdown__body" *ngIf="IsAuthentecated==true">
+                        <app-header-menu layout="topbar" (itemClick)="accountDropdown.close()" [items]="[
+                            {label: 'Dashboard',     url: '/account/dashboard'},
+                            {label: 'Edit Profile',  url: '/account/profile'},
+                            {label: 'Order History', url: '/account/orders'},
+                            {label: 'Addresses',     url: '/account/addresses'},
+                            {label: 'Password',      url: '/account/password'},
+                        ]"></app-header-menu>
+                    </div>
+                </div>
+            </div> -->
+            <div class="container22 topbar__item col-md-8" *ngIf="done">
+                <div *ngIf="CouponsScrolling==null" class="scrolling-text" [@scroll]="state"
+                    (@scroll.done)="scrollDone()" [innerHTML]="scrollingNews" style="color:#FFD700;">
+                </div>
+                <div *ngIf="CouponsScrolling!=null" class="scrolling-text" [@scroll]="state"
+                    (@scroll.done)="scrollDone()" [innerHTML]="CouponsScrolling.ScrollingText" style="color:#FFD700;">
+                </div>
+                <a *ngIf="CouponsScrolling!=null" href="{{CouponsScrolling.ScrollingUrl}}" target="_blank"> Click
+                    here</a>
+                <div *ngIf="CouponsScrolling!=null" style="margin-left: 10px;color:black;">
+                    {{demo}}
+                </div>
+            </div>
+
+            <div class="nav-panel__indicators col-md-4" style="padding: 0px;">
+                <app-indicator *ngIf="search" icon="search-20" iconWhenOpen="cross-20" trigger="click"
+                    (stateChanges)="$event === true ? search.inputElement.focus() : ''" #searchIndicator="appIndicator">
+                    <app-search location="indicator" (escape)="searchIndicator.close()" #search="search"></app-search>
+                </app-indicator>
+                <app-indicator [link]="root.wishlist()" icon="heart-20" [counter]="(wishlist.count$|async) || 0">
+                </app-indicator>
+                <app-indicator link="./shop/cart" icon="cart-20" trigger="click"
+                    [counter]="(cartitem.quantity$|async) || 0" (buttonClick)="onCartClick()"
+                    #cartIndicator="appIndicator">
+                    <app-itemdropcart *ngIf="dropcartType == 'dropdown'" (closeMenu)="cartIndicator.close(true)">
+                    </app-itemdropcart>
+                </app-indicator>
+                <app-indicator link="./shop/compare" icon="compare-16" [counter]="(comparelist.count$|async) || 0">
+                </app-indicator>
+                <app-indicator link="./account" icon="person-20" trigger="click" #accountIndicator="appIndicator">
+                    <app-account-menu (closeMenu)="accountIndicator.close(true)"></app-account-menu>
+                </app-indicator>
+                <app-indicator icon="email-55" trigger="click" #newslitterIndicator="appIndicator">
+                    <app-newsletter-menu (closeMenu)="newslitterIndicator.close(true)"></app-newsletter-menu>
+                </app-indicator>
+                <div class="topbar__item">
+                    <div class="topbar-dropdown" appDropdown="topbar-dropdown--opened" #currencyDropdown="appDropdown">
+                        <button class="topbar-dropdown__btn" type="button" (click)="currencyDropdown.toggle()">
+                            Currency: <span class="topbar__item-value">{{ currencyService.options.code }}</span>
+                            <app-icon name="arrow-rounded-down-7x5" size="7x5"></app-icon>
+                        </button>
+                        <div class="topbar-dropdown__body">
+                            <div class="menu menu--layout--topbar">
+                                <ul class="menu__list">
+                                    <li class="menu__item" *ngFor="let currency of currencies"
+                                        (mouseover)="menuItem.classList.add('menu__item--hover')"
+                                        (mouseleave)="menuItem.classList.remove('menu__item--hover')" #menuItem>
+                                        <button class="menu__item-link" type="button"
+                                            (click)="setCurrency(currency); currencyDropdown.close();">
+                                            {{ currency.name }}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__item">
+                    <div class="topbar-dropdown" appDropdown="topbar-dropdown--opened" #languageDropdown="appDropdown">
+                        <button class="topbar-dropdown__btn" type="button" (click)="languageDropdown.toggle()">
+                            Language: <span class="topbar__item-value">EN</span>
+                            <app-icon name="arrow-rounded-down-7x5" size="7x5"></app-icon>
+                        </button>
+
+                        <div class="topbar-dropdown__body">
+                            <div class="menu menu--layout--topbar menu--with-icons">
+                                <ul class="menu__list">
+                                    <li class="menu__item" *ngFor="let language of languages"
+                                        (mouseover)="menuItem.classList.add('menu__item--hover')"
+                                        (mouseleave)="menuItem.classList.remove('menu__item--hover')" #menuItem>
+                                        <button class="menu__item-link" type="button"
+                                            (click)="languageDropdown.close();">
+                                            <span class="menu__item-icon">
+                                                <img [src]="'assets/images/languages/'+language.image+'.png'" [srcset]="'assets/images/languages/'+language.image+'.png 1x,' +
+                                                               'assets/images/languages/'+language.image+'@2x.png 2x'"
+                                                    alt="">
+                                            </span>
+                                            {{ language.name }}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- .topbar / end -->

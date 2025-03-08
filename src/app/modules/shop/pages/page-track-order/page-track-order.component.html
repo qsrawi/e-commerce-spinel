@@ -1,0 +1,215 @@
+<app-page-header [breadcrumbs]="[
+    {label: 'Home',        url: '/'},
+    {label: 'Track Order', url: ''}
+]"></app-page-header>
+
+<div class="block">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-6 col-md-8">
+                <div class="card flex-grow-1 mb-0 mt-5">
+                    <div class="card-body">
+                        <div class="card-title text-center">
+                            <h1>Track Order</h1>
+                        </div>
+                        <p class="mb-4 pt-2">
+                            Enter the order number to track it </p>
+                        <form>
+                            <div class="form-group">
+                                <label for="track-order-id">Order ID</label>
+                                <input id="track-order-id" type="number" class="form-control" name="orderID"
+                                    placeholder="Order ID" [(ngModel)]="orderID">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="track-email">Email address</label>
+                                <input id="track-email" type="email" class="form-control" placeholder="Email address">
+                            </div> -->
+                            <div class="pt-3">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block"
+                                    (click)="getTrackOrder()">Track</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="ordertracklist.length>0">
+    <div class="container" style="text-align: center;" *ngIf="showSpinner">
+        <img class="center" width="100px" height="100px" src="../../assets/images/loading.gif">
+    </div>
+    <article class="card" *ngIf="!showSpinner">
+        <header class="card-header">Tracking </header>
+        <div class="card-body">
+            <h6>Order ID: {{orderID}}</h6>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated time:</strong><br><span *ngIf="order.DueDate==null">Not Set
+                            Yet</span><span *ngIf="order.DueDate!=null">{{order.DueDate | date:'dd-MM-yyyy'}}</span>
+                    </div>
+                    <div class="col"> <strong>Shipping To:</strong> <br> {{ order.billingAddress.firstName + ' ' + order.billingAddress.lastName}}, | 
+                        <!-- <div class="address-card__name">{{ order.billingAddress.firstName + ' ' + order.billingAddress.lastName}}</div> -->
+                        <div class="address-card__row">
+                            {{ order.billingAddress.country }}<br>
+                            {{ order.billingAddress.postcode }}, {{ order.billingAddress.city }}<br>
+                            {{ order.billingAddress.address }},<i class="fa fa-phone">{{ order.billingAddress.phone }}</i>
+                        </div>
+                        <!-- <div class="address-card__row">
+                        <div class="address-card__row-title">Phone Number</div>
+                        <div class="address-card__row-content">{{ order.billingAddress.phone }}</div>
+                    </div>
+                    <div class="address-card__row">
+                        <div class="address-card__row-title">Email Address</div>
+                        <div class="address-card__row-content">{{ order.billingAddress.email }}</div>
+                    </div> -->
+                    </div>
+                    <div class="col"> <strong>Status:</strong> <br> {{getcuuretstatus()}} </div>
+                    <div class="col"> <strong>Tracking #:</strong> <br> {{orderID}} </div>
+                </div>
+            </article>
+            <div class="track">
+                <div class="step {{setactivestatus(st.LKP_ID)}}" *ngFor="let st of statuslist"> 
+                    <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text">{{st.EnName}}</span> 
+                </div>
+                <!-- <div class="step active" *ngFor="let st of statuslist"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">{{st.EnName}}}</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Ready for pickup</span> </div> -->
+            </div>
+            <br>
+            <hr>
+            <div class="cart block" *ngIf="order.orderItems.length">
+                <div class="container">
+                    <table class="cart__table cart-table">
+                        <thead class="cart-table__head">
+                            <tr class="cart-table__row">
+                                <th class="cart-table__column cart-table__column--image">Image</th>
+                                <th class="cart-table__column cart-table__column--product">Product</th>
+                                <th class="cart-table__column cart-table__column--price">Price</th>
+                                <th class="cart-table__column cart-table__column--quantity">Quantity</th>
+                                <th class="cart-table__column cart-table__column--total">Total</th>
+                                <!-- <th class="cart-table__column cart-table__column--remove"></th> -->
+                            </tr>
+                        </thead>
+                        <tbody class="cart-table__body">
+                            <tr *ngFor="let item of order.orderItems" class="cart-table__row">
+                                <td class="cart-table__column cart-table__column--image">
+                                    <div *ngIf="item.itemimages[0]?.ImagePath?.length" class="product-image">
+                                        <a [routerLink]="root.item(item)" class="product-image__body">
+                                            <img class="product-image__img"
+                                                src="http://192.119.110.192:5001/itemimage/{{item.itemimages[0].ImagePath}}"
+                                                alt="">
+                                        </a>
+                                    </div>
+                                    <div *ngIf="!item.itemimages[0]?.ImagePath?.length" class="product-image">
+                                        <a [routerLink]="root.item(item)" class="product-image__body">
+                                            <img class="product-image__img" src="assets/images/products/product-3.jpg"
+                                                alt="">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="cart-table__column cart-table__column--product">
+                                    <a [routerLink]="root.item(item)" class="cart-table__product-name">{{
+                                        item.ItemEnName }}</a>
+                                    <!-- <ul *ngIf="item.cartItem.options.length" class="cart-table__options">
+                                    <li *ngFor="let option of item.cartItem.options">{{ option.name }}: {{ option.value }}</li>
+                                </ul> -->
+                                </td>
+                                <td class="cart-table__column cart-table__column--price" data-title="Price">{{
+                                    item.PriceLevel_Price|currencyFormat }}</td>
+                                <td class="cart-table__column cart-table__column--quantity" data-title="Quantity">
+                                    {{item.quantity}}
+                                    <!-- <app-input-number [formControl]="item.quantityControl" [min]="1"></app-input-number> -->
+                                </td>
+                                <td class="cart-table__column cart-table__column--total" data-title="Total">{{
+                                    item.PriceLevel_Price * item.quantity|currencyFormat }}</td>
+                                <!-- <td class="cart-table__column cart-table__column--remove">
+                                <button type="button" class="btn btn-light btn-sm btn-svg-icon" (click)="remove(item.cartItem)" [ngClass]="{'btn-loading': removedItems.includes(item.cartItem)}">
+                                    <app-icon name="cross-12" size="12"></app-icon>
+                                </button>
+                            </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- <div class="cart__actions">
+                        <form class="cart__coupon-form">
+                            <label for="input-coupon-code" class="sr-only">Password</label>
+                            <input type="text" class="form-control" id="input-coupon-code" placeholder="Coupon Code">
+                            <button type="submit" class="btn btn-primary">Apply Coupon</button>
+                        </form>
+                        <div class="cart__buttons">
+                            <a routerLink="/" class="btn btn-light">Continue Shopping</a>
+                            <button type="button" class="btn btn-primary cart__update-button" (click)="update()" [ngClass]="{'btn-loading': updating}" [disabled]="!needUpdate()">Update Cart</button>
+                        </div>
+                    </div> -->
+
+                    <div class="row justify-content-end pt-5">
+                        <div class="col-12 col-md-7 col-lg-6 col-xl-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">Order Totals</h3>
+
+                                    <table class="cart__totals">
+                                        <thead class="cart__totals-header">
+                                            <tr>
+                                                <th>Subtotal</th>
+                                                <td>{{ getsum(order) |currencyFormat }}</td>
+                                            </tr>
+                                        </thead>
+                                        <!-- <tbody *ngIf="(cart.totals$|async)?.length" class="cart__totals-body">
+                                        <tr *ngFor="let total of cart.totals$|async">
+                                            <th>{{ total.title }}</th>
+                                            <td>
+                                                {{ total.price|currencyFormat }}
+                                                <div *ngIf="total.type === 'shipping'" class="cart__calc-shipping"><a href="" (click)="$event.preventDefault()">Calculate Shipping</a></div>
+                                            </td>
+                                        </tr>
+                                        </tbody> -->
+                                        <tfoot class="cart__totals-footer">
+                                            <tr>
+                                                <th>Total</th>
+                                                <td>{{getsum(order)|currencyFormat }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <ul class="row">
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="https://i.imgur.com/iDwDQ4o.png" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title">Dell Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$950 </span>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="https://i.imgur.com/tVBy5Q0.png" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title">HP Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$850 </span>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="col-md-4">
+                    <figure class="itemside mb-3">
+                        <div class="aside"><img src="https://i.imgur.com/Bd56jKH.png" class="img-sm border"></div>
+                        <figcaption class="info align-self-center">
+                            <p class="title">ACER Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$650 </span>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul> -->
+            <!-- <hr> <a href="#" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to
+                orders</a> -->
+        </div>
+    </article>
+</div>

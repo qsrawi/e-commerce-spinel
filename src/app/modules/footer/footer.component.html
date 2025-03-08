@@ -1,0 +1,60 @@
+<div class="site-footer">
+    <div class="container">
+        <div class="site-footer__widgets">
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-4">
+                    <app-footer-contacts></app-footer-contacts>
+                </div>
+                <div class="col-6 col-md-3 col-lg-3">
+                    <app-footer-links header="Customer Service" [links]="[
+                        {label: 'Frequently Asked Questions (FAQ)', url: '/site/faq'},
+                        {label: 'Services',  url: '/site/Services'},
+                        {label: 'Shipping & Returns',      url: '/site/ShippingandReturns'},
+                        {label: 'Important Advice’s',     url: '/site/ImportantAdvices'},
+                        {label: 'Secure Shopping',       url: '/site/SecureShopping'}
+                    ]"></app-footer-links>
+                </div>
+                <div class="col-6 col-md-2 col-lg-2">
+                    <app-footer-links header="Information" [links]="[
+                        {label: 'About Us',             url: '/site/about-us'},
+                        {label: 'Terms And Conditions',       url: '/site/terms'},
+                        {label: 'Privacy Policy',       url: '/site/PrivacyPolicy'},
+                        {label: 'Contact Us',           url: '/site/contact-us'},
+                    ]"></app-footer-links>
+                </div>
+                <!-- {label: 'Site Map',             url: ''} -->
+
+                <!-- {label: 'Store Location', url: ''}, -->
+
+                <div class="col-6 col-md-3 col-lg-3">
+                    <app-footer-links header="My Account" [links]="[
+                        {label: 'Wish List',      url: '/shop/wishlist'},
+                        {label: 'Track Order',     url: '/shop/track-order/'},
+                        {label: 'Orders',     url: '/account/orders'},
+
+                    ]"></app-footer-links>
+                </div>
+                <!-- {label: 'Newsletter',     url: ''},
+                {label: 'Gift Cards',     url: ''},
+                {label: 'Affiliate',      url: ''} -->
+                <!-- <div class="col-12 col-md-12 col-lg-4">
+                    <app-footer-newsletter class="site-footer__widget"></app-footer-newsletter>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="site-footer__bottom">
+            <div class="site-footer__copyright" style="color: #FD8B8F !important;">
+                <!-- Powered by <a href="https://angular.io/" target="_blank">Angular</a> — Design by <a [href]="theme.author.profile_url" target="_blank">{{ theme.author.name }}</a> -->
+                Copyright - ©<a href="https://spineltechnology.com/" target="_blank" style="color: #FD8B8F !important;"> Spinel Technology</a> . All rights reserved <a routerLink="./site/PrivacyPolicy" target="_blank">Privacy Policy</a> | <a routerLink="./site/terms" target="_blank">Terms of service</a>
+            </div>
+            <div class="site-footer__payments" style="max-width:300px ;">
+                <img src="assets/images/visa.png"  height="24" alt="">
+                <img src="assets/images/palpayfinal.png"  height="24" alt="" style="margin-left: 5px;margin-right: 5px;">
+                <img src="assets/images/jawwal.png"  height="24" alt="" style="margin-left: 5px;margin-right: 5px;">
+
+            </div>
+        </div>
+    </div>
+    <app-totop></app-totop>
+</div>

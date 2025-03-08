@@ -1,0 +1,99 @@
+<!-- .megamenu -->
+<!-- [style.background-image]="menu.image ? 'url('+menu.image+')' : ''" -->
+<div class="megamenu">
+    <div class="megamenu__body">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="{{menu.image}}" class="img-radius col-md-12" alt="">
+            </div>
+            <div class="row col-md-10">
+                <!-- <div class=""> -->
+                <div *ngFor="let column of menu.columns" class="col-{{ column.size }}">
+                    <ul class="megamenu__links megamenu__links--level--0">
+                        <li *ngFor="let item of column.items" class="megamenu__item"
+                            [ngClass]="{'megamenu__item--with-submenu': item.items}">
+                            <a *ngIf="!item.external" [routerLink]="item.url" [target]="item.target || '_self'"
+                                (click)="itemClick.emit(item)">{{ item.label}} </a>
+                            <a *ngIf="item.external" [href]="item.url" [target]="item.target"
+                                (click)="itemClick.emit(item)">{{ item.label}}</a>
+                            <!-- <div *ngIf="Showitem==item.label"> -->
+                            <ul *ngIf="item.items" class="megamenu__links megamenu__links--level--1">
+                                <li *ngFor="let subItem of item.items"  (mouseenter)="changetshowindex(subItem)" (mouseleave)="Showitem=null" class="megamenu__item"
+                                    style="font-weight: bold;">
+                                    <span class="row" style="padding: 0px;margin: 0px;">
+                                        <a *ngIf="!subItem.external" [routerLink]="subItem.url"
+                                            [target]="subItem.target || '_self'" (click)="itemClick.emit(subItem)"
+                                           >{{
+                                            subItem.label }}</a>
+                                        <a *ngIf="subItem.external" [href]="subItem.url" [target]="subItem.target"
+                                            (click)="itemClick.emit(subItem)">{{
+                                            subItem.label }}</a>
+                                        <a  *ngIf="subItem.items!= undefined && subItem.items.length>0" (click)="changetshowindex(subItem)" 
+                                            style="padding:5px ;">
+                                            <app-icon name="arrow-rounded-down-12x7" size="15"></app-icon>
+                                        </a>
+                                    </span>
+                                    <!-- itemcat2 -->
+                                    <ul *ngIf="subItem.items && Showitem==subItem" class="megamenu__links megamenu__links--level--1">
+                                        <li *ngFor="let subItem2 of subItem.items" class="megamenu__item"
+                                            style="font-weight: normal;margin-left: 5px;">
+                                            <a *ngIf="!subItem2.external" [routerLink]="subItem2.url"
+                                                [target]="subItem2.target || '_self'"
+                                                (click)="itemClick.emit(subItem2)">{{
+                                                subItem2.label }}</a>
+                                            <a *ngIf="subItem2.external" [href]="subItem2.url"
+                                                [target]="subItem2.target" (click)="itemClick.emit(subItem2)">{{
+                                                subItem2.label }}</a>
+                                        </li>
+                                    </ul>
+                                    <!-- itemcat2 -->
+
+                                </li>
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+                <!-- </div> -->
+            </div>
+            <!-- <div class="col-md-3">
+                <div *ngFor="let imagesub of menu.subimages;let i=index" class="col-md-6" style="display: inline-block;vertical-align: top;">
+                    <img  *ngIf="i<=7" src="../catimages/{{imagesub}}"  style="width: 100%;" height="120px" class="rounded-circle" alt="">
+                <div>
+                    <br>
+                </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- .megamenu / end -->
+
+
+
+
+<!-- MAIN -->
+<!-- <div class="megamenu">
+    <div class="megamenu__body" [style.background-image]="menu.image ? 'url('+menu.image+')' : ''">
+        <div class="row">
+            <div *ngFor="let column of menu.columns" class="col-{{ column.size }}">
+                <ul class="megamenu__links megamenu__links--level--0">
+                    <li *ngFor="let item of column.items" class="megamenu__item" [ngClass]="{'megamenu__item--with-submenu': item.items}">
+
+                        <a *ngIf="!item.external" [routerLink]="item.url" [target]="item.target || '_self'" (click)="itemClick.emit(item)">{{ item.label }}</a>
+                        <a *ngIf="item.external" [href]="item.url" [target]="item.target" (click)="itemClick.emit(item)">{{ item.label }}</a>
+
+                        <ul *ngIf="item.items" class="megamenu__links megamenu__links--level--1">
+                            <li *ngFor="let subItem of item.items" class="megamenu__item">
+
+                                <a *ngIf="!subItem.external" [routerLink]="subItem.url" [target]="subItem.target || '_self'" (click)="itemClick.emit(subItem)">{{ subItem.label }}</a>
+                                <a *ngIf="subItem.external" [href]="subItem.url" [target]="subItem.target" (click)="itemClick.emit(subItem)">{{ subItem.label }}</a>
+
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> -->

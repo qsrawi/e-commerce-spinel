@@ -1,0 +1,60 @@
+<div class="card" *ngIf="!loading" style="background-color: #F1F1F1;border-radius: 20px;">
+    <div class="card-header">
+        <h5 style="color: #10CFC9;">المعلومات الشخصية</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body">
+        <div class="row no-gutters">
+            <div class="col-12 col-lg-7 col-xl-6">
+                
+                <!-- <div class="form-group">
+                    <label for="profile-first-name">Full Name</label>
+                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="profile-first-name"> Name</label>
+                    <input type="text" class="form-control" id="profile-first-name" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <label for="profile-email">Email Address</label>
+                    <input type="email" class="form-control" id="profile-email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <label for="profile-phone">رقم الهاتف</label>
+                    <input type="text" class="form-control" id="profile-phone" placeholder="رقم الهاتف">
+                </div> -->
+                <form [formGroup]="signUpForm" #signUPNgForm="ngForm">
+                    <div class="form-group">
+                        <label>اسم المستخدم</label>
+                        <input type="text" class="form-control" placeholder="اسم المستخدم"
+                            [formControlName]="'UserName'" on-focusout="checkuser()">
+                        <label *ngIf="usernamealeradyexist" style="color: red;">*UserName Already Exisit</label>
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم</label>
+                        <input type="text" class="form-control" placeholder="الاسم"
+                            [formControlName]="'FullName'">
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الالكتروني</label>
+                        <input type="email" class="form-control" placeholder="البريد الالكتروني"
+                            [formControlName]="'Email'">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="text" class="form-control" ng2TelInput placeholder="رقم الهاتف"
+                            [formControlName]="'phoneNumber'">
+                    </div>
+                    <div *ngIf="f.phoneNumber.touched && f.phoneNumber.invalid" class="alert alert-danger">
+                        <div *ngIf="f.phoneNumber.errors?.required">رقم الهاتف مطلوب.</div>
+                        <div *ngIf="f.phoneNumber.errors?.pattern"> رقم الهاتف غير صحيح.</div>
+                    </div>
+                    <div class="form-group mt-5 mb-0">
+                        <button class="btn btn-primary" [disabled]="!signUpForm.valid" (click)="save()">حفظ</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

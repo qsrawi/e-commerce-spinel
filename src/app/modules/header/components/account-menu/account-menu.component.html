@@ -1,0 +1,42 @@
+<div class="account-menu" style="direction: rtl !important;text-align: right !important;">
+    <form class="account-menu__form" [formGroup]="signInForm" 
+    #signInNgForm="ngForm" *ngIf="!IsAuthentecated">
+        <div class="account-menu__form-title">تسجيل الدخول</div>
+        <div class="form-group">
+            <label for="header-signin-email" class="sr-only">البريد الالكتروني</label>
+            <input id="header-signin-email" type="email" class="form-control form-control-sm" placeholder="البريد الالكتروني" [formControlName]="'UserName'">
+        </div>
+        <div class="form-group">
+            <label for="header-signin-password" class="sr-only">كلمة المرور</label>
+            <div class="account-menu__form-forgot">
+                <input id="header-signin-password" type="password" class="form-control form-control-sm" placeholder="كلمة المرور" name="Password"  [formControlName]="'Password'">
+                <a  appClick  [routerLink]="root.forgotPassword()" class="account-menu__form-forgot-link">نسيت؟</a>
+            </div>
+        </div>
+        <div class="form-group account-menu__form-button">
+            <button type="submit" class="btn btn-primary btn-sm" (click)="login()">دخول</button>
+        </div>
+        <div class="account-menu__form-link"><a routerLink="/account/login" (click)="closeMenu.emit()">انشاء حساب</a></div>
+    </form>
+    <div class="account-menu__divider"></div>
+    <a routerLink="/account/dashboard" class="account-menu__user" *ngIf="IsAuthentecated" (click)="closeMenu.emit()">
+        <!-- <div class="account-menu__user-avatar">
+            <img src="assets/images/avatars/avatar-3.jpg" alt=""  *ngIf="IsAuthentecated">
+        </div> -->
+        <div class="account-menu__user-info" >
+            <div class="account-menu__user-name">{{userstring}}</div>
+            <div class="account-menu__user-email">{{userid}}</div>
+        </div>
+    </a>
+    <div class="account-menu__divider"></div>
+    <ul class="account-menu__links" *ngIf="IsAuthentecated">
+        <li><a routerLink="/account/profile" (click)="closeMenu.emit()">الملف الشخصي</a></li>
+        <li><a routerLink="/account/orders" (click)="closeMenu.emit()">سجل الطلبيات</a></li>
+        <li><a routerLink="/account/addresses" (click)="closeMenu.emit()">العناوين</a></li>
+        <li><a routerLink="/account/password" (click)="closeMenu.emit()">كلمة المرور</a></li>
+    </ul>
+    <div class="account-menu__divider"></div>
+    <ul class="account-menu__links" *ngIf="IsAuthentecated">
+        <li (click)="logout()"><a routerLink="/account/login" (click)="closeMenu.emit()">تسجيل الخروج</a></li>
+    </ul>
+</div>

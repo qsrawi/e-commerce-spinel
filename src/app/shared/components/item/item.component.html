@@ -1,0 +1,173 @@
+<div class="product product--layout--{{ layout }}" *ngIf="item">
+    <div class="product__content">
+        <!-- .product__gallery -->
+        <div class="product__gallery">
+            <app-item-gallery *ngIf="item.itemimages!=undefined" [itemLayout]="layout" [images]="item.itemimages">
+            </app-item-gallery>
+        </div>
+        <!-- .product__gallery / end -->
+        <!-- .product__info -->
+        <div class="product__info" style="direction: rtl !important;text-align: right;">
+            <div class="product__wishlist-compare">
+                <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip"
+                    data-placement="right" title="Wishlist" appClick (click)="addToWishlist()"
+                    [ngClass]="{'btn-loading': addingToWishlist}">
+                    <app-icon name="wishlist-16" size="16"></app-icon>
+                </button>
+                <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip"
+                    data-placement="right" title="Compare" appClick (click)="addToCompare()"
+                    [ngClass]="{'btn-loading': addingToCompare}">
+                    <app-icon name="compare-16" size="16"></app-icon>
+                </button>
+            </div>
+            <h5 class="product__name">{{ item.ItemEnName }}</h5>
+            <!-- <h4> <a href="" appClick>{{item.StoreEnName}}</a></h4> -->
+            <div class="product__prices" >
+                <ng-container>
+                    <span class="product__new-price">{{  item.PriceLevel_Price|currencyFormat}}</span>{{ ' ' }}
+                    <span class="product__old-price" *ngIf="item.PriceLevel_Price!=(item.PriceLevel_Price / (1-item.ecommerceDiscountPercentage/100)) ">{{( (item.PriceLevel_Price / (1-item.ecommerceDiscountPercentage/100)) )|currencyFormat  }}</span>
+                </ng-container>
+              
+            </div>
+            <div class="product__rating">
+                <div class="product__rating-stars">
+                    <!-- <app-rating [value]="product.rating"></app-rating> -->
+                </div>
+                <div class="product__rating-legend">
+                    <!-- <a href="" appClick>{{ product.reviews }} Reviews</a><span>/</span><a href="" appClick>Write A Review</a> -->
+                </div>
+            </div>
+            <div class="product__description" style="direction: rtl;">
+                {{item.ItemNote}}
+            </div>
+            <ul class="product__features">
+                <li>Speed: 750 RPM</li>
+                <li>Power Source: Cordless-Electric</li>
+                <li>Battery Cell Type: Lithium</li>
+                <li>Voltage: 20 Volts</li>
+                <li>Battery Capacity: 2 Ah</li>
+            </ul>
+            <ul class="product__meta" style="direction: rtl;">
+                <li class="product__meta-availability">الحالة: <span class="text-danger"
+                        *ngIf="item.IsOutOfStock==null || item.IsOutOfStock==true">غير متوفر</span>
+                    <span class="text-success" *ngIf="item.IsOutOfStock==false">متوفر</span>
+                </li>
+                <!-- <li>Brand: <a href="" appClick>{{item.StoreEnName}}</a></li> -->
+                <li>الرقم: {{item.ItemIDForUser}}</li>
+            </ul>
+        </div>
+        <!-- .product__info / end -->
+        <!-- .product__sidebar -->
+        <div class="product__sidebar"  style="direction: rtl !important;text-align: right;">
+            <div class="product__availability">
+                الحالة:
+                <span class="text-danger" *ngIf="item.IsOutOfStock==null || item.IsOutOfStock==true">غير متوفر</span>
+                <span class="text-success" *ngIf="item.IsOutOfStock==false">متوفر</span>
+            </div>
+
+      
+            <!-- .product__options -->
+            <form class="product__options">
+                <div class="form-group product__option" *ngIf="store.getWebSiteInfo().ItemColorAndSize">
+                    <label class="product__option-label">اللون</label>
+                    <div class="input-radio-color">
+                        <div class="input-radio-color__list">
+                            <!-- <label class="input-radio-color__item input-radio-color__item--white" style="color: #fff;"
+                                data-toggle="tooltip" title="White">
+                                <input type="radio" name="color">
+                                <span></span>
+                            </label>
+                            <label class="input-radio-color__item" style="color: #ffd333;" data-toggle="tooltip"
+                                title="Yellow">
+                                <input type="radio" name="color">
+                                <span></span>
+                            </label>
+                            <label class="input-radio-color__item" style="color: #ff4040;" data-toggle="tooltip"
+                                title="Red">
+                                <input type="radio" name="color">
+                                <span></span>
+                            </label>
+                            <label class="input-radio-color__item input-radio-color__item--disabled"
+                                style="color: #4080ff;" data-toggle="tooltip" title="Blue">
+                                <input type="radio" name="color" disabled>
+                                <span></span>
+                            </label> -->
+                            <div class="input-radio-label__list">
+                                <label *ngFor="let color of item.Colorlist">
+                                    <input type="radio" name="color" [value]="color.ID" [(ngModel)]="item.ColorID">
+                                    <span>{{color.ItemColorEnName}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group product__option" *ngIf="store.getWebSiteInfo().ItemColorAndSize">
+                    <label class="product__option-label">الحجم</label>
+                    <div class="input-radio-label">
+                        <div class="input-radio-label__list">
+                            <label *ngFor="let size of item.Sizelist">
+                                <input type="radio" name="material" [value]="size.ID" [(ngModel)]="item.SizeID">
+                                <span>{{size.ItemSizeEnName}}</span>
+                            </label>
+                            <!-- <label>
+                                <input type="radio" name="material">
+                                <span>Wood</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="material" disabled>
+                                <span>Plastic</span>
+                            </label> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group product__option">
+                    <label class="product__option-label">الكمية</label>
+                    <div class="product__actions">
+                        <div class="product__actions-item">
+                            <app-input-number aria-label="Quantity" class="product__quantity" size="sm" [min]="1"
+                                [formControl]="quantity"></app-input-number>
+                        </div>
+                        <div class="product__actions-item product__actions-item--addtocart">
+                            <button type="button" class="btn btn-primary btn-sm" style="border-radius: 5px;"
+                                [ngClass]="{'btn-loading': addingToCart}" appClick (click)="addToCart()">اضافة الى السلة</button>
+                        </div>
+                        <div class="product__actions-item product__actions-item--wishlist">
+                            <button type="button" class="btn btn-secondary btn-svg-icon btn-sm" data-toggle="tooltip"
+                                title="Wishlist" [ngClass]="{'btn-loading': addingToWishlist}" appClick
+                                (click)="addToWishlist()">
+                                <app-icon name="wishlist-16" size="16"></app-icon>
+                            </button>
+                        </div>
+                        <div class="product__actions-item product__actions-item--compare">
+                            <button type="button" class="btn btn-secondary btn-svg-icon btn-sm" data-toggle="tooltip"
+                                title="Compare" [ngClass]="{'btn-loading': addingToCompare}" appClick
+                                (click)="addToCompare()">
+                                <app-icon name="compare-16" size="16"></app-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- .product__options / end -->
+        </div>
+        <!-- .product__end -->
+        <div class="product__footer">
+            <!-- <div class="product__tags tags">
+                <div class="tags__list">
+                    <a href="" appClick>Mounts</a>
+                    <a href="" appClick>Electrodes</a>
+                    <a href="" appClick>Chainsaws</a>
+                </div>
+            </div> -->
+
+            <!-- <app-share-buttons
+                class="product__share-buttons"
+                [buttons]="['facebook', {type: 'twitter', label: 'Tweet'}, 'pinterest']"
+                [pageUrl]="root.product(product)|absoluteUrl:'angular'"
+                [pageTitle]="product.name"
+                [pageImage]="product.images[0]|absoluteUrl:'html'"
+            ></app-share-buttons> -->
+        </div>
+    </div>
+</div>

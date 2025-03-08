@@ -1,0 +1,37 @@
+<!-- .block-slideshow -->
+<div class="block-slideshow block" [ngClass]="{'block-slideshow--layout--full': !withDepartments, 'block-slideshow--layout--with-departments': withDepartments}">
+    <div class="container">
+        <div class="row">
+            
+            <div *ngIf="withDepartments && !loadding" class="col-3 d-lg-block d-none" appDepartmentsArea></div>
+            <div class="col-12" [ngClass]="{'col-lg-12': !withDepartments, 'col-lg-9': withDepartments}">
+                <div class="block-slideshow__body">
+                    
+                    <owl-carousel-o *ngIf="slides?.length" [options]="options" appOwlPreventClick>
+                        <ng-template *ngFor="let slide of slides;let i =index;" carouselSlide>
+                            <a class="block-slideshow__slide" href="{{slide.url}}" appClick>
+                                <div *ngIf="(slide.image_full.toString().indexOf('mp4') > -1)==false" class="block-slideshow__slide-image block-slideshow__slide-image--desktop" [ngStyle]="{'background-image': 'url('+'\''+(withDepartments ? slide.image_full : slide.image_full)+'\''+')'}"></div>
+                                <div *ngIf="(slide.image_full.toString().indexOf('mp4') > -1)==false" class="block-slideshow__slide-image block-slideshow__slide-image--mobile" [ngStyle]="{'background-image': 'url('+slide.image_full+')'}"></div>
+                                <div class="video-container" id="vdc{{i}}">
+                                    <video  id="vd{{i}}"  loop muted playsinline autoplay="true" *ngIf="(slide.image_full.toString().indexOf('mp4') > -1)==true" >
+                                        <source [src]="slide.image_full" type="video/mp4">
+                          
+                                    </video>
+                                </div>
+                              
+                                <div class="block-slideshow__slide-content" style="text-align: right !important; ">
+                                    <div class="block-slideshow__slide-title" [innerHTML]="sanitizer.bypassSecurityTrustHtml(slide.title)"></div>
+                                    <div class="block-slideshow__slide-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml(slide.text)"></div>
+                                    <div class="block-slideshow__slide-button">
+                                        <span class="btn btn-primary btn-lg">تسوق الآن</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </ng-template>
+                    </owl-carousel-o>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- .block-slideshow / end -->

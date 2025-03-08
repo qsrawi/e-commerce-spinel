@@ -1,0 +1,64 @@
+<div class="card" *ngIf="!loading">
+    <div class="card-header">
+        <h5>{{Title}}</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body">
+        <div class="row no-gutters">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="checkout-first-name">الاسم الاول</label>
+                        <input type="text" class="form-control" id="checkout-first-name" placeholder="الاسم الاول" [(ngModel)]="addresses.firstName">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="checkout-last-name">الاسم الثاني</label>
+                        <input type="text" class="form-control" id="checkout-last-name" placeholder="الاسم الثاني" [(ngModel)]="addresses.lastName">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="checkout-company-name">اسم الشركة <span class="text-muted">(اختياري)</span></label>
+                    <input type="text" class="form-control" id="checkout-company-name" placeholder="اسم الشركة" [(ngModel)]="addresses.CompanyName">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-country">الدولة</label>
+                    <select id="checkout-country" class="form-control form-control-select2" [(ngModel)]="addresses.countryCode">
+                        <option>اختر الدولة ...</option>
+                        <option *ngFor="let cun of Countreies" value="{{cun.country_code}}">{{cun.country_enName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-street-address">العنوان</label>
+                    <input type="text" class="form-control" id="checkout-street-address" placeholder="العنوان" [(ngModel)]="addresses.address">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-city">المدينة</label>
+                    <input type="text" class="form-control" id="checkout-city" [(ngModel)]="addresses.city">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-state">الولاية / المقاطعة</label>
+                    <input type="text" class="form-control" id="checkout-state" [(ngModel)]="addresses.country">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-postcode">الرمز البريدي</label>
+                    <input type="text" class="form-control" id="checkout-postcode" [(ngModel)]="addresses.postcode">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="checkout-email">البريد الإلكتروني</label>
+                        <input type="email" class="form-control" id="checkout-email" placeholder="البريد الإلكتروني" [(ngModel)]="addresses.email">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="checkout-phone">رقم الهاتف</label>
+                        <input type="text" class="form-control" id="checkout-phone" placeholder="الهاتف" [(ngModel)]="addresses.phone"> 
+                    </div>
+                </div>
+
+                <div class="form-group mt-3 mb-0">
+                    <button class="btn btn-primary" (click)="save()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

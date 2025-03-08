@@ -1,0 +1,31 @@
+<app-page-header [header]="title" [breadcrumbs]="[
+    {label: 'Home',       url: '../../'},
+    {label: 'Our Science', url: ''}
+]"></app-page-header>
+
+<div class="block">
+    <div class="container">
+        <div class="card mb-0">
+            <div class="card-body contact-us">
+                <div class="contact-us__container">
+                    <div class="row">
+                        <div class="col-12 col-lg-12 pb-4 pb-lg-0">
+
+                            <div *ngFor="let our of articleslst" class="contact-us__address" style="text-align: center !important;">
+                                <img src="http://192.119.110.192:5001/whotoChoose/{{our.attachment}}" class="img-radius"
+                                    alt="" width="auto" style="max-height: 400px;">
+
+                                    <br><br>
+                                <div style="text-align: center;" [innerHTML]="our.description"></div>
+                                <br><br>
+                                <hr>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

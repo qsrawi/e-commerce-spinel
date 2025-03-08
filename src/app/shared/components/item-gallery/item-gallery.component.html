@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-md-3" style="max-height: 500px !important; overflow-y: scroll;">
+        
+        <div class="product-gallery__carousel row" style="vertical-align: middle !important;">
+            <!-- <div class="col-md-1" style="padding: 0px;vertical-align: middle !important;padding: 5px;"
+                (click)="featuredCarouselTranslatedleft()">
+                <svg [attr.width]="40" [attr.height]="30" style="height: 100% !important;">
+                    <use [attr.xlink:href]="'assets/images/sprite.svg#arrow-rounded-left-8x13'"></use>
+                </svg>
+            </div> -->
+            <div class="col-md-12 isis">
+                <owl-carousel-o appOwlPreventClick [options]="thumbnailsCarouselOptions" [appFakeSlides]="items.length"
+                    #fakeSlides="appFakeSlides" #thumbnailsCarousel>
+                    <ng-template *ngFor="let item of items" carouselSlide [id]="item.id">
+                        <div appClick class="product-image product-gallery__carousel-item"
+                            [class.product-gallery__carousel-item--active]="item === currentItem"
+                            (click)="onThumbnailImageClick(item)">
+                            <div class="product-image__body">
+                                <img class="product-image__img product-gallery__carousel-image" [src]="item.image" alt="">
+                            </div>
+                            <span>{{item.description}}</span>
+                        </div>
+                    </ng-template>
+                    <!-- <ng-template *ngFor="let i of fakeSlides.slides" carouselSlide [id]="'fake-slide-'+i"></ng-template> -->
+                </owl-carousel-o>
+            </div>
+            <!-- <div class="col-md-1" style="padding: 0px;vertical-align: middle !important;"
+                (click)="featuredCarouselTranslatedright()">
+                <svg [attr.width]="40" [attr.height]="30" style="height: 100% !important;">
+                    <use [attr.xlink:href]="'assets/images/sprite.svg#arrow-rounded-right-8x13'"></use>
+                </svg>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="product-gallery__featured"
+            redZoomClass="product-red-zoom product-red-zoom--layout--{{ itemLayout }}"
+            [redZoom]="currentItem?.image || ''" [redZoomThumb]="currentItem?.image || ''" [redZoomLazy]="true">
+            <div class="product-gallery__featured-inset">
+                <button *ngIf="itemLayout !== 'quickview'" class="product-gallery__zoom"
+                    (click)="openPhotoSwipe(currentItem)">
+                    <app-icon name="zoom-in-24" size="24"></app-icon>
+                </button>
+                <owl-carousel-o [options]="carouselOptions" (changed)="featuredCarouselTranslated($event)"
+                    appOwlPreventClick #featuredCarousel>
+                    <!--suppress AngularUndefinedBinding -->
+                    <ng-template *ngFor="let item of items" carouselSlide [id]="item.id">
+                        <div class="product-image product-image--location--gallery">
+                            <a appClick class="product-image__body" target="_blank" [href]="item.image"
+                                (click)="onFeaturedImageClick($event, item);">
+
+                                <img class="product-image__img" [src]="item.image" alt="" #imageElement>
+
+                            </a>
+                            <div style="text-align: center;">{{item.description}}</div>
+                        </div>
+                    </ng-template>
+                </owl-carousel-o>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="row">
+    <div class="col-md-1" style="  text-align: center;vertical-align: middle; height: 100%   ">
+        <app-icon name="arrow-rounded-left-8x13" size="8x13"></app-icon>
+    </div> -->
+<!-- <div class="col-md-1" style="  text-align: center;vertical-align: middle; height: 100%   ">
+        <svg style="display: inline;" [attr.width]="60" [attr.height]="50"><use [attr.xlink:href]="'assets/images/sprite.svg#arrow-rounded-left-8x13'"></use></svg>
+    </div> -->
+
+
+<!-- 
+    <div class="col-md-1" style="  text-align: center;vertical-align: middle; height: 100%   ">
+        <app-icon name="arrow-rounded-left-8x13" size="8x13"></app-icon>
+    </div>
+</div> -->

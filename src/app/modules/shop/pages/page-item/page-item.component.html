@@ -1,0 +1,41 @@
+<app-page-header [breadcrumbs]="[
+    {label: 'Home',         url: '/'},
+    {label: 'Screwdrivers', url: '/catalog'},
+    {label: item?.ItemEnName || '',  url: ''}
+]"></app-page-header>
+
+<ng-container *ngIf="layout !== 'sidebar'">
+    <div class="block">
+        <div class="container">
+            <app-item [item]="item" [layout]="layout"></app-item>
+
+            <app-item-tabs [item]="item"></app-item-tabs>
+        </div>
+    </div>
+
+    <app-block-items style="direction: rtl !important; text-align: right;" header="قد يعجبك ايضا" [items]="(relatedItems$|async) || []" [rows]="1" layout="grid-5"></app-block-items>
+</ng-container>
+
+<!-- <ng-container *ngIf="layout === 'sidebar'">
+    <div class="container">
+        <div class="shop-layout shop-layout--sidebar--{{ sidebarPosition }}">
+            <div *ngIf="sidebarPosition === 'start'" class="shop-layout__sidebar">
+                <app-product-sidebar></app-product-sidebar>
+            </div>
+
+            <div class="shop-layout__content">
+                <div class="block">
+                    <app-product [product]="product" [layout]="layout"></app-product>
+
+                    <app-product-tabs [withSidebar]="true"></app-product-tabs>
+                </div>
+
+                <app-block-products-carousel header="Related Products" [products]="(relatedProducts$|async) || []" [rows]="1" [withSidebar]="true" layout="grid-4-sm"></app-block-products-carousel>
+            </div>
+
+            <div *ngIf="sidebarPosition === 'end'" class="shop-layout__sidebar">
+                <app-product-sidebar></app-product-sidebar>
+            </div>
+        </div>
+    </div>
+</ng-container> -->

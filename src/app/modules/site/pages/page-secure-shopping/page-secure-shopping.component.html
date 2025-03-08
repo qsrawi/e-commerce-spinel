@@ -1,0 +1,15 @@
+<app-page-header [header]="'Secure Shopping'" [breadcrumbs]="[
+    {label: 'Home',                        url: '../../'},
+    {label: 'Secure Shopping',  url: ''}
+]"></app-page-header>
+
+<div class="block faq">
+    <div class="container">
+        <div class="faq__section">
+            <div class="faq__section-body container">
+                <img src="../customerserviceimages/{{cus.imagePath}}" class="img-radius" alt="" style="max-height: 200px;">
+                <div [innerHTML]="basictemrs"></div>
+            </div>
+        </div>
+    </div>
+</div>

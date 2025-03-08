@@ -1,0 +1,21 @@
+/*
+// .site
+*/
+@import '../variables';
+
+
+.site {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    // overflow-y: scroll !important;
+}
+.site__header {
+    flex-shrink: 0;
+}
+.site__body {
+    flex-grow: 1;
+}
+.site__footer {
+    flex-shrink: 0;
+}

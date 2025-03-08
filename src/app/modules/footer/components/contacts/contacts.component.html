@@ -1,0 +1,21 @@
+<div class="site-footer__widget footer-contacts">
+    <h5 class="footer-contacts__title">Contact Us</h5>
+
+    <!-- <div class="footer-contacts__text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in feugiat lorem. Pellentque ac placerat tellus.
+    </div> -->
+
+    <ul class="footer-contacts__contacts">
+        <li style="color: #FD8B8F !important;"><i class="footer-contacts__icon fas fa-globe-americas"></i> {{ web.CompanyName }}</li>
+        <li style="color: #FD8B8F !important;"><i class="footer-contacts__icon far fa-envelope"></i> <a href="./" style="color: blue;">{{ web.Email }}</a></li>
+        <li style="color: #FD8B8F !important;"><i class="footer-contacts__icon fas fa-mobile-alt"></i> {{ web.Contact }} <span *ngIf="web.Contact !='' && web.Whatsapp !=''">,</span>{{ web.Whatsapp }}</li>
+        <!-- <li><i class="footer-contacts__icon far fa-clock"></i> {{ store.hours }}</li> -->
+    </ul>
+
+    <div class="footer-newsletter__text footer-newsletter__text--social" style="color: #FD8B8F !important;">
+        Follow us on social networks
+    </div>
+    <app-social-links *ngIf="!loading" class="footer-newsletter__social-links" shape="circle"></app-social-links>
+    <!-- <img src="http://192.119.110.192:5001/logo/logo.png" class="img-radius" alt="User-Profile-Image" width="200px" height="40px"> -->
+
+</div>
