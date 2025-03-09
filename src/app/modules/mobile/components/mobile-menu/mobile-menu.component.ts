@@ -44,12 +44,15 @@ export class MobileMenuComponent implements OnDestroy, OnInit {
     ];
     isOpen = false;
     IsAuthentecated: boolean = false;
+    token: any = "";
 
     // links: MobileMenuItem[] =mobileMenu;
     links: MobileMenuItem[] = [];
     constructor(private authserverService: AuthService, public mobilemenu: MobileMenuService, private sliderservice: SliderService, private currencyService: CurrencyService) {
-        let accessToken = localStorage.getItem('accessTokenEcommerce');
-        accessToken != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
+        }
+        this.token != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
         authserverService.getLoggedtoken.subscribe(name => this.changetoken(name));
 
         this.getcurrencies();

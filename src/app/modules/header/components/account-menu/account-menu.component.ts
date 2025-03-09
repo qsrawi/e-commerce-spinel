@@ -68,12 +68,13 @@ export class AccountMenuComponent implements OnInit {
     //   //Console.log(this.userstring);
     //   //Console.log(this.userid);
     // }else
-    let accessToken = localStorage.getItem('accessTokenEcommerce');
-    accessToken != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
-    this.userstring = localStorage.getItem('userString') || '';
-    this.userid = localStorage.getItem('userName') || '';
-    authserverService.getLoggedtoken.subscribe(name => this.changetoken(name));
-
+    if (typeof window !== 'undefined') {
+      let accessToken = localStorage.getItem('accessTokenEcommerce');
+      accessToken != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
+      this.userstring = localStorage.getItem('userString') || '';
+      this.userid = localStorage.getItem('userName') || '';
+      authserverService.getLoggedtoken.subscribe(name => this.changetoken(name));
+    }
 
     // //Console.log("setTimeout :::: asddddddddddddddddddddddddddddddddddddddddddddddddddd");
     // let accessToken = localStorage.getItem('accessTokenEcommerce');

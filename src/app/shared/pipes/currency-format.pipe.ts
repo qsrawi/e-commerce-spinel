@@ -8,12 +8,14 @@ import { CurrencyService } from '../services/currency.service';
     standalone: true
 })
 export class CurrencyFormatPipe implements PipeTransform {
-    currencyPipe: CurrencyPipe = new CurrencyPipe(this.locale);
+    currencyPipe: CurrencyPipe;
 
     constructor(
         @Inject(LOCALE_ID) private locale: string,
         private service: CurrencyService
-    ) { }
+    ) { 
+        this.currencyPipe = new CurrencyPipe(this.locale);
+    }
 
     transform(
         value: any,
@@ -26,9 +28,14 @@ export class CurrencyFormatPipe implements PipeTransform {
         display = display || this.service.options.display;
         digitsInfo = digitsInfo || this.service.options.digitsInfo;
         locale = locale || this.service.options.locale;
-        value=this.service.options.TheRate!=undefined? value/this.service.options.TheRate
-        :this.service.options.MaxRate!=undefined?
-        value/this.service.options.MaxRate:value;
+        
+        value = this.service.options.TheRate !== undefined 
+            ? value / this.service.options.TheRate
+            : this.service.options.MaxRate !== undefined 
+            ? value / this.service.options.MaxRate 
+            : value;
+
         return this.currencyPipe.transform(value, currencyCode, display, digitsInfo, locale);
     }
 }
+

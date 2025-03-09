@@ -40,14 +40,18 @@ export class ShopService {
     // noinspection JSUnusedLocalSymbols
     server: string = "http://192.119.110.192:5001/api/";
 
-    token = localStorage.getItem('accessTokenEcommerce');
+    token: any = "";
     headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this.token
     });
     constructor(
         private http: HttpClient,
-    ) { }
+    ) {
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
+        }
+     }
 
     /**
      * Returns category object by slug.

@@ -9,6 +9,7 @@ import { BsModalService } from "ngx-bootstrap/modal";
 import { CarouselModule } from "ngx-owl-carousel-o";
 import { ToastrModule } from "ngx-toastr";
 import { routes } from "./app-routes";
+import { CurrencyPipe } from "@angular/common";
 
 export const appConfig: ApplicationConfig =  {
     providers: [
@@ -24,7 +25,6 @@ export const appConfig: ApplicationConfig =  {
         provideHttpClient(withFetch()),
         BsModalService, // ✅ Provide BsModalService explicitly
         // modules
-        { provide: LOCALE_ID, useValue: 'it' },
         {
             provide: 'SocialAuthServiceConfig',
             useValue: {
@@ -42,6 +42,7 @@ export const appConfig: ApplicationConfig =  {
             } as SocialAuthServiceConfig,
         },
         provideAnimations(),
+        CurrencyPipe,
         provideRouter(routes)
     ]
 };

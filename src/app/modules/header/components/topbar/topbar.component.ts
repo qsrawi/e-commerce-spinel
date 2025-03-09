@@ -79,6 +79,7 @@ export class TopbarComponent {
     staticFrom: number | null = null;
     scrollPosition = 0;
     scrollDistance = 0;
+    token: any = "";
 
     media!: Observable<MediaQueryList>;
 
@@ -105,8 +106,10 @@ export class TopbarComponent {
         this.route.data.subscribe(data => {
             this.dropcartType = data.dropcartType || 'dropdown';
         });
-        let accessToken = localStorage.getItem('accessTokenEcommerce');
-        accessToken != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
+        }
+        this.token != null ? this.IsAuthentecated = true : this.IsAuthentecated = false;
         authservice.getLoggedtoken.subscribe(name => this.changetoken(name));
         this.getcurrencies();
     }

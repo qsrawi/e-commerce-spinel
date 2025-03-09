@@ -14,6 +14,7 @@ export class StoreService {
     email = 'stroyka@example.com';
     phone = ['(800) 060-0730', '(800) 060-0730'];
     hours = 'Mon-Sat 10:00pm - 7:00pm';
+    token: any = "";
 
     get primaryPhone(): string | null {
         return this.phone.length > 0 ? this.phone[0] : null;
@@ -21,14 +22,16 @@ export class StoreService {
 
     web: WebSiteInfo = initweb;
 
-
-    token = localStorage.getItem('accessTokenEcommerce');
     server: string = "http://192.119.110.192:5001/api/"
     headers = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + this.token
     });
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { 
+        if (typeof window !== 'undefined') {
+            this.token = localStorage.getItem('accessTokenEcommerce');
+        }
+    }
     getallinfo(): Observable<WebSiteInfo> {
         return this.http.get<WebSiteInfo>(this.server + "WebSiteInfo", { headers: this.headers });
     }

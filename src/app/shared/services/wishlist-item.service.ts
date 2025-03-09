@@ -24,7 +24,7 @@ export class WishlistItemService implements OnDestroy {
     readonly count$: Observable<number> = this.itemsSubject$.pipe(map(items => items.length));
     readonly onAdding$: Observable<Item> = this.onAddingSubject$.asObservable();
 
-    token :any="";
+    token: any = "";
     server: string = "http://192.119.110.192:5001/api/"
     headers = new HttpHeaders({
         'Content-Type': 'application/json',
